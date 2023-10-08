@@ -1,6 +1,6 @@
 import { configureAuth } from "react-query-auth";
 
-// import { Spinner } from '@/components/Elements';
+import { Spinner } from '@/components/Elements';
 import {
   loginWithEmailAndPassword,
   getUser,
@@ -49,8 +49,8 @@ const authConfig = {
   logoutFn,
   LoaderComponent() {
     return (
-      <div className="w-screen h-screen flex justify-center items-center">
-        {/* <Spinner size="xl" /> */}
+      <div className="w-100 h-100-vh d-flex justify-content-center align-items-center">
+        <Spinner size="xl" />
       </div>
     );
   },

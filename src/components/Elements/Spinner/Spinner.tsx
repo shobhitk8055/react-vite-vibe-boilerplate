@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import './spinner.css';
 
 const sizes = {
   sm: 'h-4 w-4',
@@ -9,7 +10,7 @@ const sizes = {
 
 const variants = {
   light: 'text-white',
-  primary: 'text-blue-600',
+  primary: 'text-primary',
 };
 
 export type SpinnerProps = {

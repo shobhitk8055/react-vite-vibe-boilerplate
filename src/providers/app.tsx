@@ -3,10 +3,11 @@ import { ErrorBoundary } from "react-error-boundary";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Notifications } from '@/components/Notifications/Notifications';
-import { queryClient } from '@/lib/react-query';
+import { Notifications } from "@/components/Notifications/Notifications";
+import { queryClient } from "@/lib/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Spinner } from "@/components/Elements";
+import { AnimatePresence } from "framer-motion";
 
 const ErrorFallback = () => {
   return (
@@ -33,9 +34,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   return (
     <React.Suspense
       fallback={
-        <div className="flex items-center justify-center w-screen h-screen">
+        <div className="d-flex align-items-center justify-content-center w-100 h-100-vh">
           <Spinner size="xl" />
-          <p>Spinner</p>
         </div>
       }
     >
@@ -44,8 +44,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           <QueryClientProvider client={queryClient}>
             {process.env.NODE_ENV !== "test" && <ReactQueryDevtools />}
             <Notifications />
-
-            <Router>{children}</Router>
+            <AnimatePresence mode="wait">
+              <Router>{children}</Router>
+            </AnimatePresence>
           </QueryClientProvider>
         </HelmetProvider>
       </ErrorBoundary>

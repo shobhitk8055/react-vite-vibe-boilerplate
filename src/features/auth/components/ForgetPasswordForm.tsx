@@ -10,19 +10,17 @@ import useAnimate from "@/hooks/animate";
 
 const schema = z.object({
   email: z.string().min(1, "Please enter email address"),
-  password: z.string().min(1, "Please enter password"),
 });
 
 type LoginValues = {
   email: string;
-  password: string;
 };
 
 type LoginFormProps = {
   onSuccess: () => void;
 };
 
-export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+export const ForgetPasswordForm = ({ onSuccess }: LoginFormProps) => {
   const login = useLogin();
   const navigate = useNavigate();
   const { animate, callAfterAnimateFn } = useAnimate();
@@ -36,6 +34,8 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       {animate && (
         <motion.div {...animations}>
           <div className="card p-4 mt-4 mx-4">
+            <h5>Forget Password</h5>
+            <h6 className="mb-4 font-light">Please enter your email address</h6>
             <Form<LoginValues, typeof schema>
               onSubmit={async (values) => {
                 login.mutate(values, { onSuccess });
@@ -51,12 +51,6 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                     error={formState.errors["email"]}
                     registration={register("email")}
                   />
-                  <InputField
-                    type="password"
-                    label="Password"
-                    error={formState.errors["password"]}
-                    registration={register("password")}
-                  />
                   <div className="d-flex justify-content-center">
                     <Button
                       startIcon={<i className="fa-solid fa-lock" />}
@@ -64,28 +58,21 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                       type="submit"
                       className="w-100"
                     >
-                      Log In
+                      Submit
                     </Button>
                   </div>
                 </>
               )}
             </Form>
-            <Link
-              to="#"
-              onClick={callAfterAnimateFn(() => navigate("/auth/forget"))}
-              className="forget-link"
-            >
-              Forget Password
-            </Link>
           </div>
           <p className="text-center mt-2">
-            Don't have an account?{" "}
+            Already have an account?{" "}
             <Link
               to="#"
-              onClick={callAfterAnimateFn(() => navigate("/auth/register"))}
+              onClick={callAfterAnimateFn(() => navigate("/auth/login"))}
               className="forget-link"
             >
-              Sign Up
+              Login
             </Link>
           </p>
         </motion.div>
