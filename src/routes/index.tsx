@@ -11,7 +11,7 @@ export const AppRoutes = () => {
 
   const intialRoute = {
     path: "/",
-    element: <Navigate to={user.data ? "/owner" : "/auth/login"} />,
+    element: <Navigate to={user.data ? "/app" : "/auth/login"} />,
   };
   const routes = user.data ? protectedRoutes : publicRoutes;
 

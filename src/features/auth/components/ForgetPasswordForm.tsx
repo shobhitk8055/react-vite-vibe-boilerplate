@@ -2,31 +2,44 @@ import { Link, useNavigate } from "react-router-dom";
 import * as z from "zod";
 import { Button } from "@/components/Elements";
 import { Form, InputField } from "@/components/Form";
-import { useLogin } from "@/lib/auth";
 import "../routes/auth.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { animations } from "./Layout";
 import useAnimate from "@/hooks/animate";
+import { useState } from "react";
+import { forgetPassword } from "../api/forget";
+import { useNotificationStore } from "@/stores/notifications";
 
 const schema = z.object({
-  email: z.string().min(1, "Please enter email address"),
+  email: z
+    .string()
+    .min(1, "Please enter email address")
+    .email("Please enter a valid email address!"),
 });
 
-type LoginValues = {
+type ForgetValues = {
   email: string;
 };
 
-type LoginFormProps = {
-  onSuccess: () => void;
-};
-
-export const ForgetPasswordForm = ({ onSuccess }: LoginFormProps) => {
-  const login = useLogin();
+export const ForgetPasswordForm = () => {
   const navigate = useNavigate();
+  const { addNotification } = useNotificationStore();
   const { animate, callAfterAnimateFn } = useAnimate();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
-    navigate("/auth/register");
+  const handleSubmit = async (values: ForgetValues) => {
+    try {
+      setLoading(true);
+      // await forgetPassword(values);
+      addNotification({
+        type: "success",
+        title: "Success",
+        message: "Reset password link has been to sent to your email address!",
+      });
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,10 +49,8 @@ export const ForgetPasswordForm = ({ onSuccess }: LoginFormProps) => {
           <div className="card p-4 mt-4 mx-4">
             <h5>Forget Password</h5>
             <h6 className="mb-4 font-light">Please enter your email address</h6>
-            <Form<LoginValues, typeof schema>
-              onSubmit={async (values) => {
-                login.mutate(values, { onSuccess });
-              }}
+            <Form<ForgetValues, typeof schema>
+              onSubmit={handleSubmit}
               schema={schema}
             >
               {({ register, formState }) => (
@@ -54,7 +65,7 @@ export const ForgetPasswordForm = ({ onSuccess }: LoginFormProps) => {
                   <div className="d-flex justify-content-center">
                     <Button
                       startIcon={<i className="fa-solid fa-lock" />}
-                      isLoading={login.isLoading}
+                      isLoading={loading}
                       type="submit"
                       className="w-100"
                     >

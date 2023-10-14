@@ -8,7 +8,7 @@ export const ForgetPassword = () => {
 
   return (
     <LoginLayout title="Forget Password">
-      <ForgetPasswordForm onSuccess={() => null} />
+      <ForgetPasswordForm />
     </LoginLayout>
   );
 };

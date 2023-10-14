@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const useAnimate = () => {
-  const [animate, setAnimate] = useState(true);
+  const [animate, setAnimate] = useState<boolean>(true);
 
   useEffect(() => {
     setAnimate(true);

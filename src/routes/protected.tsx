@@ -23,7 +23,7 @@ const App = () => {
 
 export const protectedRoutes = [
   {
-    path: '/owner',
+    path: '/app',
     element: <App />,
     children: [
       { path: 'users', element: <div /> },
