@@ -18,16 +18,29 @@ async function handleUserResponse(data: UserResponse) {
 }
 
 async function loadUser() {
-  if (storage.getToken()) {
-    const data = await getUser();
-    return data;
+  // if (storage.getToken()) {
+  //   const data = await getUser();
+  //   return data;
+  // }
+  // return null;
+  const user = {
+    first_name : "Super",
+    last_name: "Admin",
+    email: "super@admin.com",
+    phone: "+917357798661"
   }
-  return null;
+  return user;
 }
 
 async function loginFn(data: LoginCredentialsDTO) {
-  const response = await loginWithEmailAndPassword(data);
-  const user = await handleUserResponse(response);
+  // const response = await loginWithEmailAndPassword(data);
+  // const user = await handleUserResponse(response);
+  const user = {
+    first_name : "Super",
+    last_name: "Admin",
+    email: "super@admin.com",
+    phone: "+917357798661"
+  }
   return user;
 }
 

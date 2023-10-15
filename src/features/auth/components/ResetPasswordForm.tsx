@@ -11,17 +11,16 @@ import { forgetPassword } from "../api/forget";
 import { useNotificationStore } from "@/stores/notifications";
 
 const schema = z.object({
-  email: z
-    .string()
-    .min(1, "Please enter email address")
-    .email("Please enter a valid email address!"),
+  new_password: z.string().min(1, "Please enter new password"),
+  confirm_password: z.string().min(1, "Please enter confirm password"),
 });
 
 type ForgetValues = {
-  email: string;
+  new_password: string;
+  confirm_password: string;
 };
 
-export const ForgetPasswordForm = () => {
+export const ResetPasswordForm = () => {
   const navigate = useNavigate();
   const { addNotification } = useNotificationStore();
   const { animate, callAfterAnimateFn } = useAnimateFn();
@@ -47,8 +46,8 @@ export const ForgetPasswordForm = () => {
       {animate && (
         <motion.div {...animations}>
           <div className="card p-4 mt-4 mx-4">
-            <h5>Forget Password</h5>
-            <h6 className="mb-4 font-light">Please enter your email address</h6>
+            <h5>Reset Password</h5>
+            <h6 className="mb-4 font-light">Please enter your new password</h6>
             <Form<ForgetValues, typeof schema>
               onSubmit={handleSubmit}
               schema={schema}
@@ -56,17 +55,23 @@ export const ForgetPasswordForm = () => {
               {({ register, formState }) => (
                 <>
                   <InputField
-                    type="email"
-                    label="Email Address"
-                    error={formState.errors["email"]}
-                    registration={register("email")}
+                    type="password"
+                    label="New Password"
+                    error={formState.errors["new_password"]}
+                    registration={register("new_password")}
+                  />
+                  <InputField
+                    type="password"
+                    label="Confirm Password"
+                    error={formState.errors["confirm_password"]}
+                    registration={register("confirm_password")}
                   />
                   <div className="d-flex justify-content-center">
                     <Button
                       startIcon={<i className="fa-solid fa-lock" />}
                       isLoading={loading}
                       type="submit"
-                      className="w-100"
+                      className="w-100 mt-2"
                     >
                       Submit
                     </Button>

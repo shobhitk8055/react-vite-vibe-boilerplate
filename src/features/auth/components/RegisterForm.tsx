@@ -6,7 +6,7 @@ import { useLogin } from "@/lib/auth";
 import "../routes/auth.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { animations } from "./Layout";
-import useAnimate from "@/hooks/animate";
+import useAnimateFn from "@/hooks/animate";
 
 const schema = z.object({
   email: z.string().min(1, "Please enter email address"),
@@ -25,7 +25,7 @@ type LoginFormProps = {
 export const RegisterForm = ({ onSuccess }: LoginFormProps) => {
   const login = useLogin();
   const navigate = useNavigate();
-  const { animate, callAfterAnimateFn } = useAnimate();
+  const { animate, callAfterAnimateFn } = useAnimateFn();
 
   const handleSubmit = () => {
     navigate("/auth/register");

@@ -8,7 +8,7 @@ export const Login = () => {
 
   return (
     <LoginLayout title="Login">
-      <LoginForm onSuccess={() => navigate('/')} />
+      <LoginForm onSuccess={() => navigate('/admin')} />
     </LoginLayout>
   );
 };

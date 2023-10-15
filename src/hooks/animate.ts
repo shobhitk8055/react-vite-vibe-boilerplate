@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useAnimate = () => {
+const useAnimateFn = () => {
   const [animate, setAnimate] = useState<boolean>(true);
 
   useEffect(() => {
@@ -24,4 +24,4 @@ const useAnimate = () => {
   return { animate, callAfterAnimate, callAfterAnimateFn, setAnimate };
 };
 
-export default useAnimate;
+export default useAnimateFn;
