@@ -27,10 +27,5 @@ If you are developing a production application, we recommend updating the config
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
 
 
-<motion.h1
-        initial={{ x: -1000, opacity: 0 }}
-        animate={{ fontSize: 50, color: "#ff2994", x: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        Vite + React
-      </motion.h1>
+## For sidebar used
+  https://www.npmjs.com/package/react-pro-sidebar

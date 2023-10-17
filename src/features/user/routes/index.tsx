@@ -1,4 +1,5 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { SidebarComponent } from "@/components/Layout/Sidebar/SidebarComponent";
+import { Route, Routes } from "react-router-dom";
 
 // import { Login } from "./Login";
 // import { Register } from "./Register";
@@ -6,7 +7,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 // import { ResetPassword } from "./ResetPassword";
 
 function Login() {
-  return <p>BABA</p>
+  return <SidebarComponent />
 }
 export const UserRoutes = () => {
   return (
