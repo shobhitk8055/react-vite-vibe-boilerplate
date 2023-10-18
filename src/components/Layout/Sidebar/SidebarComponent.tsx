@@ -11,6 +11,7 @@ import { SidebarHeader } from "./components/SidebarHeader";
 import { Typography } from "./components/Typography";
 import { colors } from "@/components/config";
 import TopBar from "../TopBar/TopBar";
+import { styled } from "node_modules/@tanstack/react-query-devtools/build/lib/utils";
 
 const themes = {
   light: {
@@ -41,10 +42,18 @@ const hexToRgba = (hex: string, alpha: number) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-export const SidebarComponent = () => {
+export const SidebarComponent = ({
+  toggled,
+  setToggled,
+  broken,
+  setBroken
+}: {
+  toggled: boolean;
+  setToggled: (i: boolean) => void;
+  broken: boolean;
+  setBroken: (i: boolean) => void;
+}) => {
   const [collapsed, setCollapsed] = React.useState(false);
-  const [toggled, setToggled] = React.useState(false);
-  const [broken, setBroken] = React.useState(false);
 
   const menuItemStyles: MenuItemStyles = {
     root: {
@@ -81,13 +90,7 @@ export const SidebarComponent = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        height: "100vh",
-        direction: "ltr",
-      }}
-    >
+    <div>
       <Sidebar
         collapsed={collapsed}
         toggled={toggled}
@@ -100,7 +103,11 @@ export const SidebarComponent = () => {
         }}
       >
         <div
-          style={{ display: "flex", flexDirection: "column", height: "100%" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100vh",
+          }}
         >
           <SidebarHeader style={{ marginBottom: "24px", marginTop: "16px" }} />
           <div style={{ flex: 1, marginBottom: "32px" }}>
@@ -108,7 +115,10 @@ export const SidebarComponent = () => {
               <Typography
                 variant="body2"
                 fontWeight={600}
-                style={{ opacity: collapsed ? 0 : 0.7, letterSpacing: "0.5px" }}
+                style={{
+                  opacity: collapsed ? 0 : 0.7,
+                  letterSpacing: "0.5px",
+                }}
               >
                 General
               </Typography>
@@ -131,65 +141,6 @@ export const SidebarComponent = () => {
           </div>
         </div>
       </Sidebar>
-
-      <main className="w-100">
-        <TopBar />
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-        <p>ababababababa</p>
-      </main>
     </div>
   );
 };
