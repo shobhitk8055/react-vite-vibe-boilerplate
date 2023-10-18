@@ -12,7 +12,7 @@ function Login() {
 export const UserRoutes = () => {
   return (
     <Routes>
-      <Route path="login" element={<Login />} />
+      <Route path="" element={<Login />} />
       {/* <Route path="register" element={<Register />} />
       <Route path="forget" element={<ForgetPassword />} />*/}
       {/* <Route path="*" element={<Navigate to="/admin/login" />} />  */}

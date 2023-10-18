@@ -9,21 +9,21 @@ import {
 } from "react-pro-sidebar";
 import { SidebarHeader } from "./components/SidebarHeader";
 import { Typography } from "./components/Typography";
-
-type Theme = "light" | "dark";
+import { colors } from "@/components/config";
+import TopBar from "../TopBar/TopBar";
 
 const themes = {
   light: {
     sidebar: {
-      backgroundColor: "#eeeeee",
+      backgroundColor: "#f8f7f7",
       color: "#607489",
     },
     menu: {
       menuContent: "#fbfcfd",
-      icon: "#0098e5",
+      icon: colors.primary,
       hover: {
-        backgroundColor: "#c5e4ff",
-        color: "#44596e",
+        backgroundColor: colors.secondary,
+        color: "#000",
       },
       disabled: {
         color: "#9fb6cf",
@@ -84,7 +84,7 @@ export const SidebarComponent = () => {
     <div
       style={{
         display: "flex",
-        height: "100%",
+        height: "100vh",
         direction: "ltr",
       }}
     >
@@ -102,9 +102,7 @@ export const SidebarComponent = () => {
         <div
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
         >
-          <SidebarHeader
-            style={{ marginBottom: "24px", marginTop: "16px" }}
-          />
+          <SidebarHeader style={{ marginBottom: "24px", marginTop: "16px" }} />
           <div style={{ flex: 1, marginBottom: "32px" }}>
             <div style={{ padding: "0 24px", marginBottom: "8px" }}>
               <Typography
@@ -134,19 +132,63 @@ export const SidebarComponent = () => {
         </div>
       </Sidebar>
 
-      <main>
-        <div style={{ padding: "16px 24px" }}>
-          <div style={{ marginBottom: "16px" }}>
-            {broken && (
-              <button
-                className="sb-button"
-                onClick={() => setToggled(!toggled)}
-              >
-                <i className="fa-solid fa-bars"></i>
-              </button>
-            )}
-          </div>
-        </div>
+      <main className="w-100">
+        <TopBar />
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
+        <p>ababababababa</p>
       </main>
     </div>
   );
