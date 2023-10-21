@@ -1,7 +1,9 @@
-import React from 'react'
+import ContentWrapper from '@/components/Layout/ContentWrapper'
 
 export const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <ContentWrapper title="Dashboard">
+      <p>Dashboard</p>
+    </ContentWrapper>
   )
 }

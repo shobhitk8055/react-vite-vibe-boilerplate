@@ -1,6 +1,7 @@
 import React from "react";
 import { SidebarComponent } from "@/components/Layout/Sidebar/SidebarComponent";
 import TopBar from "./TopBar/TopBar";
+import ContentWrapper from "./ContentWrapper";
 
 const Layout = ({ children }: { children: React.ReactElement }) => {
   const [toggled, setToggled] = React.useState(false);
@@ -15,12 +16,13 @@ const Layout = ({ children }: { children: React.ReactElement }) => {
       <SidebarComponent
         toggled={toggled}
         setToggled={setToggled}
-        broken={broken}
         setBroken={setBroken}
       />
       <main className="w-100">
         <TopBar toggled={toggled} setToggled={setToggled} broken={broken} />
-        <div style={{ height: "90vh", overflow: "auto" }}>{children}</div>
+        <div style={{ height: "90vh", overflow: "auto" }}>
+            {children}
+        </div>
       </main>
     </div>
   );

@@ -78,6 +78,10 @@ export const SidebarComponent = ({
         backgroundColor: hexToRgba(themes.light.menu.hover.backgroundColor, 1),
         color: themes.light.menu.hover.color,
       },
+      [`&.ps-active`]: {
+        backgroundColor: colors.secondary,
+        color: '#000',
+      },
     },
     label: ({ open }) => ({
       fontWeight: open ? 600 : undefined,
@@ -85,7 +89,9 @@ export const SidebarComponent = ({
   };
 
   return (
-    <motion.div>
+    <motion.div
+      initial={{ opacity: 0, x: -100 }}
+      animate={{ opacity: 1, x: 0 }}>
       <Sidebar
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
@@ -105,18 +111,11 @@ export const SidebarComponent = ({
         >
           <SidebarHeader style={{ marginBottom: "24px", marginTop: "16px" }} />
           <div style={{ flex: 1, marginBottom: "32px" }}>
-            <div style={{ padding: "0 24px", marginBottom: "8px" }}>
-              <Typography
-                variant="body2"
-                fontWeight={600}
-                style={{
-                  opacity: 0.7,
-                  letterSpacing: "0.5px",
-                }}
-              >
-                General
-              </Typography>
-            </div>
+            <Menu menuItemStyles={menuItemStyles}>
+              <MenuItem active icon={<i className="fa-solid fa-user"></i>}>
+                Dashboard
+              </MenuItem>
+            </Menu>
             <Menu menuItemStyles={menuItemStyles}>
               <MenuItem icon={<i className="fa-solid fa-user"></i>}>
                 Users
