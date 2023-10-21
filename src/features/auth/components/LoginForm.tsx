@@ -38,8 +38,8 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           <div className="card p-4 mt-4 mx-4">
             <Form<LoginValues, typeof schema>
               onSubmit={async (values) => {
-                // onSuccess();
-                login.mutate(values, { onSuccess });
+                onSuccess();
+                // login.mutate(values, { onSuccess });
               }}
               schema={schema}
             >

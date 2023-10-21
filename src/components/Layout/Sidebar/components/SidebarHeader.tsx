@@ -4,7 +4,6 @@ import logo from "@/assets/logo.png";
 
 interface SidebarHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
-  rtl: boolean;
 }
 
 const StyledSidebarHeader = styled.div`
@@ -20,7 +19,7 @@ const StyledSidebarHeader = styled.div`
   }
 `;
 
-const StyledLogo = styled.div<{ rtl?: boolean }>`
+const StyledLogo = styled.div`
   width: 100%;
   min-width: 35px;
   height: 35px;
@@ -32,7 +31,7 @@ const StyledLogo = styled.div<{ rtl?: boolean }>`
   }
 `;
 
-export const SidebarHeader: React.FC<SidebarHeaderProps> = ({ children, rtl, ...rest }) => {
+export const SidebarHeader: React.FC<SidebarHeaderProps> = ({ children, ...rest }) => {
   return (
     <StyledSidebarHeader {...rest}>
       <div style={{ display: 'flex', alignItems: 'center' }}>

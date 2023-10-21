@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Sidebar,
   Menu,
@@ -10,8 +9,7 @@ import {
 import { SidebarHeader } from "./components/SidebarHeader";
 import { Typography } from "./components/Typography";
 import { colors } from "@/components/config";
-import TopBar from "../TopBar/TopBar";
-import { styled } from "node_modules/@tanstack/react-query-devtools/build/lib/utils";
+import { motion } from "framer-motion";
 
 const themes = {
   light: {
@@ -45,15 +43,12 @@ const hexToRgba = (hex: string, alpha: number) => {
 export const SidebarComponent = ({
   toggled,
   setToggled,
-  broken,
   setBroken
 }: {
   toggled: boolean;
   setToggled: (i: boolean) => void;
-  broken: boolean;
   setBroken: (i: boolean) => void;
 }) => {
-  const [collapsed, setCollapsed] = React.useState(false);
 
   const menuItemStyles: MenuItemStyles = {
     root: {
@@ -72,7 +67,7 @@ export const SidebarComponent = ({
     subMenuContent: ({ level }) => ({
       backgroundColor:
         level === 0
-          ? hexToRgba(themes.light.menu.menuContent, !collapsed ? 0.4 : 1)
+          ? hexToRgba(themes.light.menu.menuContent, 0.4)
           : "transparent",
     }),
     button: {
@@ -90,9 +85,8 @@ export const SidebarComponent = ({
   };
 
   return (
-    <div>
+    <motion.div>
       <Sidebar
-        collapsed={collapsed}
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
         onBreakPoint={setBroken}
@@ -116,7 +110,7 @@ export const SidebarComponent = ({
                 variant="body2"
                 fontWeight={600}
                 style={{
-                  opacity: collapsed ? 0 : 0.7,
+                  opacity: 0.7,
                   letterSpacing: "0.5px",
                 }}
               >
@@ -141,6 +135,6 @@ export const SidebarComponent = ({
           </div>
         </div>
       </Sidebar>
-    </div>
+    </motion.div>
   );
 };
