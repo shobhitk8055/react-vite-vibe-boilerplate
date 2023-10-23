@@ -7,9 +7,10 @@ import {
   MenuItemStyles,
 } from "react-pro-sidebar";
 import { SidebarHeader } from "./components/SidebarHeader";
-import { Typography } from "./components/Typography";
 import { colors } from "@/components/config";
 import { motion } from "framer-motion";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const themes = {
   light: {
@@ -49,6 +50,12 @@ export const SidebarComponent = ({
   setToggled: (i: boolean) => void;
   setBroken: (i: boolean) => void;
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [active, setActive] = useState('');
+  const to = (url: string) => () => {
+    navigate(url);
+  } 
 
   const menuItemStyles: MenuItemStyles = {
     root: {
@@ -88,6 +95,19 @@ export const SidebarComponent = ({
     }),
   };
 
+  useEffect(() => {
+    const pathName = location.pathname;
+    const parts = pathName.split('/');
+    if(parts.length > 2){
+      const part = parts[2];
+      setActive(part);
+    }else{
+      setActive('');
+      
+    }
+    
+  }, [location]);
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -100 }}
@@ -112,12 +132,12 @@ export const SidebarComponent = ({
           <SidebarHeader style={{ marginBottom: "24px", marginTop: "16px" }} />
           <div style={{ flex: 1, marginBottom: "32px" }}>
             <Menu menuItemStyles={menuItemStyles}>
-              <MenuItem active icon={<i className="fa-solid fa-user"></i>}>
+              <MenuItem onClick={to('/admin')} active={active === ''} icon={<i className="fa-solid fa-user"></i>}>
                 Dashboard
               </MenuItem>
             </Menu>
             <Menu menuItemStyles={menuItemStyles}>
-              <MenuItem icon={<i className="fa-solid fa-user"></i>}>
+              <MenuItem onClick={to('/admin/users')} active={active === 'users'} icon={<i className="fa-solid fa-user"></i>}>
                 Users
               </MenuItem>
             </Menu>
