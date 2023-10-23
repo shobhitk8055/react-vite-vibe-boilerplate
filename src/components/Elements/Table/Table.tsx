@@ -1,7 +1,6 @@
-import React from "react";
-import { Pagination } from "@mui/material";
+  import { Pagination } from "@mui/material";
 
-export const Table = ({ pagination = true }: { pagination: boolean }) => {
+export const Table = ({ pagination = true }: { pagination?: boolean }) => {
   return (
     <div>
       {pagination && (

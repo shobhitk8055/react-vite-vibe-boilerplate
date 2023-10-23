@@ -27,10 +27,6 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const navigate = useNavigate();
   const { animate, callAfterAnimateFn } = useAnimateFn();
 
-  const handleSubmit = () => {
-    navigate("/auth/register");
-  };
-
   return (
     <AnimatePresence>
       {animate && (
@@ -38,6 +34,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           <div className="card p-4 mt-4 mx-4">
             <Form<LoginValues, typeof schema>
               onSubmit={async (values) => {
+                values;
                 onSuccess();
                 // login.mutate(values, { onSuccess });
               }}

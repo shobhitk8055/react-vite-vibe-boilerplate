@@ -3,7 +3,7 @@ import { configureAuth } from "react-query-auth";
 import { Spinner } from '@/components/Elements';
 import {
   loginWithEmailAndPassword,
-  getUser,
+  // getUser,
   registerWithEmailAndPassword,
   UserResponse,
   LoginCredentialsDTO,

@@ -27,10 +27,6 @@ export const RegisterForm = ({ onSuccess }: LoginFormProps) => {
   const navigate = useNavigate();
   const { animate, callAfterAnimateFn } = useAnimateFn();
 
-  const handleSubmit = () => {
-    navigate("/auth/register");
-  };
-
   return (
     <AnimatePresence>
       {animate && (

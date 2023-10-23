@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { animations } from "./Layout";
 import useAnimateFn from "@/hooks/animate";
 import { useState } from "react";
-import { forgetPassword } from "../api/forget";
 import { useNotificationStore } from "@/stores/notifications";
 
 const schema = z.object({
@@ -30,6 +29,7 @@ export const ForgetPasswordForm = () => {
   const handleSubmit = async (values: ForgetValues) => {
     try {
       setLoading(true);
+      values;
       // await forgetPassword(values);
       addNotification({
         type: "success",

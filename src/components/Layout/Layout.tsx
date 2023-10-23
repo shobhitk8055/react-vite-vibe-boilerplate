@@ -1,7 +1,6 @@
 import React from "react";
 import { SidebarComponent } from "@/components/Layout/Sidebar/SidebarComponent";
 import TopBar from "./TopBar/TopBar";
-import ContentWrapper from "./ContentWrapper";
 
 const Layout = ({ children }: { children: React.ReactElement }) => {
   const [toggled, setToggled] = React.useState(false);

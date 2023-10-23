@@ -2,7 +2,6 @@ import * as React from "react";
 
 import logo from "@/assets/logo.png";
 import { Head } from "@/components/Head";
-import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 type LayoutProps = {

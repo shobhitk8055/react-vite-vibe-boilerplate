@@ -1,6 +1,5 @@
 import { Table } from '@/components/Elements/Table/Table'
 import ContentWrapper from '@/components/Layout/ContentWrapper'
-import React from 'react'
 
 export const Users = () => {
   return (
