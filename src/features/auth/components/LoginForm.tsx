@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import * as z from "zod";
 import { Button } from "@/components/Elements";
-import { Form, InputField } from "@/components/Form";
+import { Form, InputField, MultiSelect } from "@/components/Form";
 import { useLogin } from "@/lib/auth";
 import "../routes/auth.css";
 import { AnimatePresence, motion } from "framer-motion";
@@ -45,7 +45,6 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                   <InputField
                     type="email"
                     label="Email Address"
-                    blueLabel
                     error={formState.errors["email"]}
                     registration={register("email")}
                   />
@@ -55,6 +54,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                     error={formState.errors["password"]}
                     registration={register("password")}
                   />
+                  <MultiSelect />
                   <div className="d-flex justify-content-center">
                     <Button
                       startIcon={<i className="fa-solid fa-lock" />}

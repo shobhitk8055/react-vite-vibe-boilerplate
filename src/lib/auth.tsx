@@ -3,7 +3,7 @@ import { configureAuth } from "react-query-auth";
 import { Spinner } from '@/components/Elements';
 import {
   loginWithEmailAndPassword,
-  // getUser,
+  getUser,
   registerWithEmailAndPassword,
   UserResponse,
   LoginCredentialsDTO,
@@ -18,18 +18,18 @@ async function handleUserResponse(data: UserResponse) {
 }
 
 async function loadUser() {
-  // if (storage.getToken()) {
-  //   const data = await getUser();
-  //   return data;
-  // }
-  // return null;
-  const user = {
-    first_name : "Super",
-    last_name: "Admin",
-    email: "super@admin.com",
-    phone: "+917357798661"
+  if (storage.getToken()) {
+    const data = await getUser();
+    return data;
   }
-  return user;
+  return null;
+  // const user = {
+  //   first_name : "Super",
+  //   last_name: "Admin",
+  //   email: "super@admin.com",
+  //   phone: "+917357798661"
+  // }
+  // return user;
 }
 
 async function loginFn(data: LoginCredentialsDTO) {
@@ -41,7 +41,7 @@ async function loginFn(data: LoginCredentialsDTO) {
   //   email: "super@admin.com",
   //   phone: "+917357798661"
   // }
-  return user;
+  // return user;
 }
 
 async function registerFn(data: RegisterCredentialsDTO) {
