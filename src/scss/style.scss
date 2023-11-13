@@ -28,3 +28,9 @@ span.passwordIcon.floating-icon {
   background-color: #ededed;
   cursor: pointer;
 }
+.phone-control input {
+  border: none;
+}
+.phone-control input:focus-visible  {
+  outline: none;
+}

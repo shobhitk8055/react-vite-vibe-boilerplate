@@ -3,30 +3,40 @@ import * as z from "zod";
 
 import { Form } from "./Form";
 import { InputField } from "./InputField";
-import { SelectField } from ".";
+import { CheckboxField, SelectField } from ".";
 import { MultiSelect } from ".";
 import { Button } from "../Elements";
 import { CreatableSearch } from "./CreatableSearch";
-import { CheckBoxField } from "./CheckBoxField";
+import { RadioField } from "./RadioField";
+import { InputPhone } from "./InputPhone";
+import { optionalNum, requiredNum } from "@/lib/zodRules";
 
 type FormValues = {
   string: string;
   password: string;
+  numField: number;
   select: string;
   multi: string[];
   creatable: string;
   creatableMulti: string[];
-  multiOptions: any;
+  areYouSure: boolean;
+  areYouSurePrivacy: boolean;
+  radioOptions: string;
+  phone: string;
 };
 
 const schema = z.object({
   string: z.string().min(1, "Required"),
   password: z.string().min(1, "Required"),
   select: z.string().min(1, "Required"),
+  numField: requiredNum("Required"),
   creatable: z.string().min(1, "Required"),
+  phone: z.string().min(1, "Required"),
   multi: z.string().array().min(1, "Required"),
   creatableMulti: z.string().array().min(1, "Required"),
-  multiOptions: z.string().array().min(1, "Required"),
+  areYouSure: z.boolean(),
+  areYouSurePrivacy: z.boolean(),
+  radioOptions: z.string({ invalid_type_error: "Required " }).nullable(),
 });
 
 const options = [
@@ -57,7 +67,7 @@ const MyForm = () => {
       onSubmit={async (values) => {
         console.log(values);
 
-        // alert(JSON.stringify(values, null, 2));
+        alert(JSON.stringify(values, null, 2));
       }}
       schema={schema}
       id="my-form"
@@ -65,40 +75,68 @@ const MyForm = () => {
         defaultValues: {
           string: "a",
           password: "AB",
+          phone: "+917357798661",
           select: "first_value",
           multi: ["first_option_value"],
           creatable: "first_option_value",
+          creatableMulti: ["first_option_value"],
         },
       }}
     >
       {({ register, formState, control }) => (
         <>
-          <InputField
-            label="String"
-            error={formState.errors["string"]}
-            registration={register("string")}
-          />
-          <InputField
-            type="password"
-            label="Password"
-            error={formState.errors["password"]}
-            registration={register("password")}
-          />
-          <SelectField
-            control={control}
-            options={options}
-            label="Select field"
-            error={formState.errors["select"]}
-            registration={register("select")}
-          />
-          <MultiSelect
-            options={multiOptions}
-            control={control}
-            label="Multi Select"
-            error={formState.errors["multi"]}
-            registration={register("multi")}
-          />
           <div className="row">
+            <div className="col-6">
+              <InputField
+                label="String"
+                error={formState.errors["string"]}
+                registration={register("string")}
+              />
+            </div>
+            <div className="col-6">
+              <InputField
+                type="password"
+                label="Password"
+                error={formState.errors["password"]}
+                registration={register("password")}
+              />
+            </div>
+            <div className="col-6">
+              <InputField
+                type="number"
+                label="Number"
+                error={formState.errors["numField"]}
+                registration={register("numField", {
+                  valueAsNumber: true
+                })}
+              />
+            </div>
+            <div className="col-6">
+              <InputPhone
+                control={control}
+                label="Phone number"
+                error={formState.errors["phone"]}
+                registration={register("phone")}
+              />
+            </div>
+            <div className="col-6">
+              <SelectField
+                control={control}
+                options={options}
+                label="Select field"
+                error={formState.errors["select"]}
+                registration={register("select")}
+              />
+            </div>
+            <div className="col-6">
+              <MultiSelect
+                options={multiOptions}
+                control={control}
+                label="Multi Select"
+                error={formState.errors["multi"]}
+                registration={register("multi")}
+              />
+            </div>
             <div className="col-6">
               <CreatableSearch
                 options={multiOptions}
@@ -121,14 +159,25 @@ const MyForm = () => {
           </div>
           <div className="row">
             <div className="col">
-              <CheckBoxField
-                label="Select one platform"
-                options={options}
-                registration={register("multiOptions")}
-                error={formState.errors["multiOptions"]}
+              <CheckboxField
+                label="Please accept terms and conditions"
+                registration={register("areYouSure")}
+                error={formState.errors["areYouSure"]}
+              />
+              <CheckboxField
+                label="Please accept privacy policy"
+                registration={register("areYouSurePrivacy")}
+                error={formState.errors["areYouSurePrivacy"]}
               />
             </div>
-            
+            <div className="col">
+              <RadioField
+                label="Select one platform"
+                options={options}
+                registration={register("radioOptions")}
+                error={formState.errors["radioOptions"]}
+              />
+            </div>
           </div>
 
           <Button type="submit">Submit</Button>
