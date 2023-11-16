@@ -6,4 +6,5 @@ export * from "./SelectField";
 export * from "./MultiSelect";
 export * from "./RadioField";
 export * from "./CheckboxField";
+export * from "./InputDate";
 // export * from './InputPhone';

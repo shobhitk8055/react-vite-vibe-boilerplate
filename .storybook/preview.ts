@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/react";
+import "flatpickr/dist/themes/material_green.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "@/scss/custom.scss";
 

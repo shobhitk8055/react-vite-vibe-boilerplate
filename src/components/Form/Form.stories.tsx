@@ -3,7 +3,7 @@ import * as z from "zod";
 
 import { Form } from "./Form";
 import { InputField } from "./InputField";
-import { CheckboxField, SelectField } from ".";
+import { CheckboxField, SelectField, InputDate } from ".";
 import { MultiSelect } from ".";
 import { Button } from "../Elements";
 import { CreatableSearch } from "./CreatableSearch";
@@ -16,6 +16,7 @@ type FormValues = {
   password: string;
   numField: number;
   select: string;
+  date: string;
   multi: string[];
   creatable: string;
   creatableMulti: string[];
@@ -29,14 +30,17 @@ const schema = z.object({
   string: z.string().min(1, "Required"),
   password: z.string().min(1, "Required"),
   select: z.string().min(1, "Required"),
-  numField: requiredNum("Required"),
+  date: z.string().min(1, "Required"),
+  numField: optionalNum,
   creatable: z.string().min(1, "Required"),
   phone: z.string().min(1, "Required"),
   multi: z.string().array().min(1, "Required"),
   creatableMulti: z.string().array().min(1, "Required"),
   areYouSure: z.boolean(),
   areYouSurePrivacy: z.boolean(),
-  radioOptions: z.string({ invalid_type_error: "Required " }).nullable(),
+  radioOptions: z
+    .string({ invalid_type_error: "Required " })
+    .min(1, "Required"),
 });
 
 const options = [
@@ -80,6 +84,7 @@ const MyForm = () => {
           multi: ["first_option_value"],
           creatable: "first_option_value",
           creatableMulti: ["first_option_value"],
+          date: "2023-08-09",
         },
       }}
     >
@@ -107,7 +112,7 @@ const MyForm = () => {
                 label="Number"
                 error={formState.errors["numField"]}
                 registration={register("numField", {
-                  valueAsNumber: true
+                  valueAsNumber: true,
                 })}
               />
             </div>
@@ -117,6 +122,13 @@ const MyForm = () => {
                 label="Phone number"
                 error={formState.errors["phone"]}
                 registration={register("phone")}
+              />
+            </div>
+            <div className="col-6">
+              <InputDate
+                label="Phone number"
+                registration={register("phone")}
+                error={formState.errors["phone"]}
               />
             </div>
             <div className="col-6">
