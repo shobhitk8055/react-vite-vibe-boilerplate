@@ -3,20 +3,22 @@ import * as z from "zod";
 
 import { Form } from "./Form";
 import { InputField } from "./InputField";
-import { CheckboxField, SelectField, InputDate } from ".";
+import { CheckboxField, SelectField, InputDate, InputDateRange } from ".";
 import { MultiSelect } from ".";
 import { Button } from "../Elements";
 import { CreatableSearch } from "./CreatableSearch";
 import { RadioField } from "./RadioField";
 import { InputPhone } from "./InputPhone";
 import { optionalNum, requiredNum } from "@/lib/zodRules";
+import moment from "moment";
 
 type FormValues = {
   string: string;
   password: string;
   numField: number;
   select: string;
-  date: string;
+  date: Date;
+  dateRange: Date[];
   multi: string[];
   creatable: string;
   creatableMulti: string[];
@@ -30,7 +32,8 @@ const schema = z.object({
   string: z.string().min(1, "Required"),
   password: z.string().min(1, "Required"),
   select: z.string().min(1, "Required"),
-  date: z.string().min(1, "Required"),
+  date: z.date(),
+  dateRange: z.date().array(),
   numField: optionalNum,
   creatable: z.string().min(1, "Required"),
   phone: z.string().min(1, "Required"),
@@ -70,7 +73,6 @@ const MyForm = () => {
     <Form<FormValues, typeof schema>
       onSubmit={async (values) => {
         console.log(values);
-
         alert(JSON.stringify(values, null, 2));
       }}
       schema={schema}
@@ -80,11 +82,12 @@ const MyForm = () => {
           string: "a",
           password: "AB",
           phone: "+917357798661",
+          date: new Date(),
+          dateRange: [moment().subtract(1, 'day').toDate(), new Date()],
           select: "first_value",
           multi: ["first_option_value"],
           creatable: "first_option_value",
           creatableMulti: ["first_option_value"],
-          date: "2023-08-09",
         },
       }}
     >
@@ -126,9 +129,18 @@ const MyForm = () => {
             </div>
             <div className="col-6">
               <InputDate
-                label="Phone number"
-                registration={register("phone")}
-                error={formState.errors["phone"]}
+                control={control}
+                label="Choose date"
+                registration={register("date")}
+                error={formState.errors["date"]}
+              />
+            </div>
+            <div className="col-6">
+              <InputDateRange
+                control={control}
+                label="Choose date range"
+                registration={register("dateRange")}
+                error={formState.errors["dateRange"]}
               />
             </div>
             <div className="col-6">

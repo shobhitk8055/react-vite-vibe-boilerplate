@@ -2,10 +2,10 @@ import clsx from "clsx";
 import Flatpickr from "react-flatpickr";
 import { Controller, UseFormRegisterReturn, Control } from "react-hook-form";
 import { FieldWrapper, FieldWrapperPassThroughProps } from "./FieldWrapper";
+import moment from "moment";
 import flatpickr from "flatpickr";
-import { useRef } from "react";
 
-type InputDateProps = FieldWrapperPassThroughProps & {
+type InputDateRangeProps = FieldWrapperPassThroughProps & {
   className?: string;
   value?: string;
   label: string;
@@ -14,17 +14,9 @@ type InputDateProps = FieldWrapperPassThroughProps & {
   options?: Partial<flatpickr.Options.Options>;
 };
 
-export const InputDate = (props: InputDateProps) => {
-  const {
-    className,
-    registration,
-    error,
-    label,
-    control,
-    options = {},
-  } = props;
+export const InputDateRange = (props: InputDateRangeProps) => {
+  const { className, registration, error, label, control, options = {} } = props;
   const { name } = registration;
-  const fp = useRef(null);
 
   return (
     <FieldWrapper label={label} error={error}>
@@ -33,33 +25,22 @@ export const InputDate = (props: InputDateProps) => {
         control={control}
         render={({ field: { onChange, value } }) => (
           <div className="d-flex position-relative">
-            <Flatpickr
-              ref={fp}
-              className={clsx(
-                "form-control",
-                error?.message && "is-invalid",
-                className
-              )}
-              placeholder="Choose date"
-              // value={value}
-              // onChange={(selectedDays) => {
-              //   onChange(selectedDays[0]);
-              // }}
-              options={{
-                altInput: true,
-                altFormat: "j F, Y",
-                dateFormat: "Y-m-d",
-                ...options,
-              }}
-            />
-            <div
-              className="position-absolute clear-icon"
-              onClick={() => {
-                console.log(fp.current);
-                if (!fp?.current?.flatpickr) return;
-                fp.current.flatpickr.clear();
-              }}
-            >
+              <Flatpickr
+                className={clsx("form-control", error?.message && 'is-invalid', className)}
+                placeholder="Choose date"
+                value={value}
+                onChange={(selectedDays) => {
+                  onChange(selectedDays);
+                }}
+                options={{
+                  altInput: true,
+                  altFormat: "j F, Y",
+                  dateFormat: "Y-m-d",
+                  mode: "range",
+                  ...options
+                }}
+              />
+            <div className="position-absolute clear-icon" onClick={() => onChange([])}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 101 101"

@@ -1,4 +1,4 @@
-import "flatpickr/dist/themes/material_green.css";
+import "flatpickr/dist/themes/material_red.css";
 import "./App.css";
 
 import { AppProvider } from "@/providers/app";

@@ -7,4 +7,5 @@ export * from "./MultiSelect";
 export * from "./RadioField";
 export * from "./CheckboxField";
 export * from "./InputDate";
+export * from "./InputDateRange";
 // export * from './InputPhone';

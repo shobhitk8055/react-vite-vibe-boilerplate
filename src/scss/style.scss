@@ -34,3 +34,11 @@ span.passwordIcon.floating-icon {
 .phone-control input:focus-visible  {
   outline: none;
 }
+.clear-icon {
+      right: 15px;
+    width: 20px;
+    top: 9px;
+}
+.clear-icon svg {
+  fill: #cccccc;
+}
