@@ -10,6 +10,8 @@ import { CreatableSearch } from "./CreatableSearch";
 import { RadioField } from "./RadioField";
 import { InputPhone } from "./InputPhone";
 import { optionalNum, requiredNum } from "@/lib/zodRules";
+import { useDropzone } from "react-dropzone";
+
 import moment from "moment";
 
 type FormValues = {
@@ -69,11 +71,16 @@ const multiOptions = [
 ];
 
 const MyForm = () => {
+  const { getRootProps, getInputProps } = useDropzone();
+
   return (
     <Form<FormValues, typeof schema>
       onSubmit={async (values) => {
+        delete values.password;
         console.log(values);
         alert(JSON.stringify(values, null, 2));
+
+        
       }}
       schema={schema}
       id="my-form"
@@ -83,7 +90,7 @@ const MyForm = () => {
           password: "AB",
           phone: "+917357798661",
           date: new Date(),
-          dateRange: [moment().subtract(1, 'day').toDate(), new Date()],
+          dateRange: [moment().subtract(1, "day").toDate(), new Date()],
           select: "first_value",
           multi: ["first_option_value"],
           creatable: "first_option_value",
@@ -94,6 +101,12 @@ const MyForm = () => {
       {({ register, formState, control }) => (
         <>
           <div className="row">
+            <div className="col-6">
+              <div className="mainBox" {...getRootProps()}>
+                <input {...getInputProps()} />
+                <p>Drag 'n' drop some files here, or click to select files</p>
+              </div>
+            </div>
             <div className="col-6">
               <InputField
                 label="String"
