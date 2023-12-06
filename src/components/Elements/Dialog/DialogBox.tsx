@@ -1,13 +1,13 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import { Button } from "..";
+import clsx from "clsx";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -16,15 +16,36 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogActions-root": {
     padding: theme.spacing(1),
   },
+  "& .MuiPaper-root": {
+    borderRadius: "0.5rem",
+  },
+  "& .MuiBackdrop-root.MuiModal-backdrop": {
+    backgroundColor: "rgba(107, 114, 128)",
+    opacity: "0.75 !important",
+  },
 }));
+
+const footerPositions = {
+  center: "justify-content-center",
+  right: "justify-content-end",
+  left: "justify-content-start",
+};
+
+export type DialogProps = {
+  fullScreen?: boolean;
+  triggerButton?: React.ReactElement;
+  confirmButton?: React.ReactElement;
+  title?: string;
+  footerBtnPosition?: keyof typeof footerPositions;
+};
 
 export const DialogBox = ({
   fullScreen = false,
   triggerButton,
-}: {
-  fullScreen: boolean;
-  triggerButton?: React.ReactElement;
-}) => {
+  confirmButton,
+  title,
+  footerBtnPosition = "center",
+}: DialogProps): React.ReactElement => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -37,21 +58,19 @@ export const DialogBox = ({
   return (
     <React.Fragment>
       {triggerButton ? (
-        triggerButton
+        <span onClick={handleClickOpen}> {triggerButton}</span>
       ) : (
-        <Button variant="outlined" onClick={handleClickOpen}>
-          Open dialog
-        </Button>
+        <Button onClick={handleClickOpen}>Open dialog</Button>
       )}
       <BootstrapDialog
         fullScreen={fullScreen}
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        sx={{
+          borderRadius: "0.5rem",
+        }}
       >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Modal title
-        </DialogTitle>
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -64,28 +83,31 @@ export const DialogBox = ({
         >
           <CloseIcon />
         </IconButton>
+
         <DialogContent dividers>
+          {title && <h2 className="text-center my-4">{title}</h2>}
+
           <Typography gutterBottom>
             Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
             dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
             ac consectetur ac, vestibulum at eros.
           </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
-            auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
-            cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
-            dui. Donec ullamcorper nulla non metus auctor fringilla.
-          </Typography>
+          <div
+            className={clsx(
+              "footer-btn-area d-flex gap-2",
+              footerPositions[footerBtnPosition]
+            )}
+          >
+            <Button variant="outline" onClick={handleClose}>
+              Cancel
+            </Button>
+            {confirmButton ? (
+              confirmButton
+            ) : (
+              <Button onClick={handleClose}>Save changes</Button>
+            )}
+          </div>
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
       </BootstrapDialog>
     </React.Fragment>
   );
