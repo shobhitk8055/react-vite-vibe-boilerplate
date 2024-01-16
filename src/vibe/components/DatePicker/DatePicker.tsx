@@ -1,9 +1,9 @@
 import React, { forwardRef, useCallback, useState } from "react";
 import cx from "classnames";
 import moment from "moment";
-import "react-dates/initialize";
-import "react-dates/lib/css/_datepicker.css";
-import { DayOfWeekShape, DayPickerRangeController, DayPickerSingleDateController } from "react-dates";
+import "@shobhitk/react-dates-latest/initialize";
+import "@shobhitk/react-dates-latest/lib/css/_datepicker.css";
+import { DayOfWeekShape, DayPickerRangeController, DayPickerSingleDateController } from "@shobhitk/react-dates-latest";
 import DatePickerHeaderComponent from "./DatePickerHeader/DatePickerHeader";
 import DateNavigationItem from "./DateNavigationItem/DateNavigationItem";
 import YearPicker from "./YearPicker/YearPicker";
