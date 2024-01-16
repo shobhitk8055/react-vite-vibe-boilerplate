@@ -3,6 +3,7 @@ import "./App.css";
 
 import { AppProvider } from "@/providers/app";
 import { AppRoutes } from "@/routes";
+import "./vibe";
 
 function App() {
   return (
