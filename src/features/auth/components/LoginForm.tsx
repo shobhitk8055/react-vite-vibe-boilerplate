@@ -35,9 +35,13 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             <Form<LoginValues, typeof schema>
               onSubmit={async (values) => {
                 values;
-                onSuccess();
-                // login.mutate(values, { onSuccess });
+                // onSuccess();
+                login.mutate(values, { onSuccess });
               }}
+              options={{ defaultValues: {
+                email: "baba@yopmail.com",
+                password: "@3"
+              }}}
               schema={schema}
             >
               {({ register, formState }) => (
