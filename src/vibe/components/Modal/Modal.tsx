@@ -1,4 +1,10 @@
-import React, { cloneElement, FC, ReactElement, useCallback, useMemo } from "react";
+import React, {
+  cloneElement,
+  FC,
+  ReactElement,
+  useCallback,
+  useMemo,
+} from "react";
 import ReactDOM from "react-dom";
 import cx from "classnames";
 import { useA11yDialog } from "./a11yDialog";
@@ -6,12 +12,19 @@ import ModalContent from "./ModalContent/ModalContent";
 import ModalHeader from "./ModalHeader/ModalHeader";
 import useBodyScrollLock from "./useBodyScrollLock";
 import useShowHideModal from "./useShowHideModal";
-import { isModalContent, isModalFooter, isModalHeader, ModalWidth, validateTitleProp } from "./ModalHelper";
+import {
+  isModalContent,
+  isModalFooter,
+  isModalHeader,
+  ModalWidth,
+  validateTitleProp,
+} from "./ModalHelper";
 import { NOOP } from "../../utils/function-utils";
 import { withStaticProps } from "../../types";
 import { getTestId } from "../../tests/test-ids-utils";
 import { ComponentDefaultTestId } from "../../tests/constants";
 import styles from "./Modal.module.scss";
+import { Button } from "@/vibe/components";
 
 interface ModalProps {
   /**
@@ -95,17 +108,18 @@ const Modal: FC<ModalProps> & { width?: typeof ModalWidth } = ({
   closeButtonAriaLabel = "Close",
   contentSpacing = false,
   zIndex = 10000,
-  "data-testid": dataTestId
+  "data-testid": dataTestId,
 }) => {
   const childrenArray: ReactElement[] = useMemo(
-    () => (children ? (React.Children.toArray(children) as ReactElement[]) : []),
+    () =>
+      children ? (React.Children.toArray(children) as ReactElement[]) : [],
     [children]
   );
   validateTitleProp(title, childrenArray);
 
   const [instance, attr] = useA11yDialog({
     id,
-    alertDialog
+    alertDialog,
   });
 
   const closeIfNotAlertType = useCallback(() => {
@@ -123,7 +137,7 @@ const Modal: FC<ModalProps> & { width?: typeof ModalWidth } = ({
     show,
     triggerElement,
     onClose,
-    alertDialog
+    alertDialog,
   });
 
   const header = useMemo(() => {
@@ -141,12 +155,23 @@ const Modal: FC<ModalProps> & { width?: typeof ModalWidth } = ({
         closeButtonAriaLabel={closeButtonAriaLabel}
       />
     );
-  }, [attr.title, childrenArray, title, description, onClose, closeButtonAriaLabel]);
+  }, [
+    attr.title,
+    childrenArray,
+    title,
+    description,
+    onClose,
+    closeButtonAriaLabel,
+  ]);
 
   const content = useMemo(() => {
     return (
       childrenArray.find(isModalContent) || (
-        <ModalContent>{childrenArray.filter(child => !isModalHeader(child) && !isModalFooter(child))}</ModalContent>
+        <ModalContent>
+          {childrenArray.filter(
+            (child) => !isModalHeader(child) && !isModalFooter(child)
+          )}
+        </ModalContent>
       )
     );
   }, [childrenArray]);
@@ -155,7 +180,8 @@ const Modal: FC<ModalProps> & { width?: typeof ModalWidth } = ({
     return childrenArray.find(isModalFooter) || null;
   }, [childrenArray]);
 
-  const customWidth = width !== ModalWidth.DEFAULT && width !== ModalWidth.FULL_WIDTH;
+  const customWidth =
+    width !== ModalWidth.DEFAULT && width !== ModalWidth.FULL_WIDTH;
 
   const dialog = ReactDOM.createPortal(
     <div
@@ -175,7 +201,7 @@ const Modal: FC<ModalProps> & { width?: typeof ModalWidth } = ({
         className={cx(styles.dialog, classNames.modal, {
           [styles.default]: width === ModalWidth.DEFAULT,
           [styles.full]: width === ModalWidth.FULL_WIDTH,
-          [styles.spacing]: contentSpacing
+          [styles.spacing]: contentSpacing,
         })}
         style={{ width: customWidth ? width : null }}
       >
@@ -190,6 +216,31 @@ const Modal: FC<ModalProps> & { width?: typeof ModalWidth } = ({
   return ReactDOM.createPortal(dialog, document.body);
 };
 
+export const useHelperOpenModalButton = ({
+  title = "Open modal",
+  open,
+  openModalButtonRef,
+  color = undefined,
+  testId = undefined,
+}: {
+  title: string;
+  open: () => void;
+  openModalButtonRef: React.RefObject<HTMLButtonElement> | null;
+  color?: string;
+  testId?: string;
+}) => {
+  return (
+    <Button
+      onClick={open}
+      ref={openModalButtonRef}
+      color={color}
+      data-testid={testId}
+    >
+      {title}
+    </Button>
+  );
+};
+
 export default withStaticProps(Modal, {
-  width: ModalWidth
+  width: ModalWidth,
 });

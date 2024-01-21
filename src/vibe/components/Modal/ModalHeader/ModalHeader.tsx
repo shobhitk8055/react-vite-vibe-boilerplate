@@ -59,6 +59,10 @@ export interface ModalHeaderProps extends VibeComponentProps {
    */
   iconClassName?: string;
   /**
+   * class name for the icon
+   */
+  iconColor?: string;
+  /**
    * Aria label for the close button
    */
   closeButtonAriaLabel?: string;
@@ -84,17 +88,24 @@ const ModalHeader: FC<ModalHeaderProps> = ({
   hideCloseButton,
   closeButtonAriaLabel = "close",
   id,
-  "data-testid": dataTestId
+  "data-testid": dataTestId,
+  iconColor = "black"
 }) => {
   return (
     <div
       className={cx(styles.container, className)}
-      data-testid={dataTestId || getTestId(ComponentDefaultTestId.MODAL_HEADER, id)}
+      data-testid={
+        dataTestId || getTestId(ComponentDefaultTestId.MODAL_HEADER, id)
+      }
     >
       {children ? (
         children
       ) : (
-        <Flex align={Flex.align.START} gap={Flex.gaps.SMALL} className={titleClassName}>
+        <Flex
+          align={Flex.align.START}
+          gap={Flex.gaps.SMALL}
+          className={titleClassName}
+        >
           {icon && (
             <Icon
               className={cx(styles.icon, iconClassName)}
@@ -103,15 +114,21 @@ const ModalHeader: FC<ModalHeaderProps> = ({
               iconSize={iconSize}
               ignoreFocusStyle
               clickable={false}
+              style={{ color: iconColor }}
             />
           )}
+
           <Heading id={id} maxLines={2}>
             {title}
           </Heading>
         </Flex>
       )}
       {description && (
-        <Text type={Text.types.TEXT2} maxLines={2} className={cx(styles.description, descriptionClassName)}>
+        <Text
+          type={Text.types.TEXT2}
+          maxLines={2}
+          className={cx(styles.description, descriptionClassName)}
+        >
           {description}
         </Text>
       )}
@@ -131,7 +148,7 @@ const ModalHeader: FC<ModalHeaderProps> = ({
 };
 
 Object.assign(ModalHeader, {
-  displayName: "ModalHeader"
+  displayName: "ModalHeader",
 });
 
 export default ModalHeader;
