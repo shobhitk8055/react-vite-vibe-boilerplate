@@ -3,10 +3,14 @@ import * as React from "react";
 
 import { useDisclosure } from "@/hooks/useDisclosure";
 
-import { Button, ModalContent, ModalFooterButtons, ModalHeader } from "@/vibe/components";
+import {
+  Button,
+  ModalContent,
+  ModalFooterButtons,
+} from "@/vibe/components";
 
-import Modal, { useHelperOpenModalButton } from "./Modal";
-import { Upgrade, Warning } from "../Icon/Icons";
+import Modal from "./Modal";
+import { ConfirmationModal } from "./ConfirmationModal";
 
 const meta: Meta = {
   title: "Example/Modal",
@@ -24,7 +28,9 @@ export const Normal: Story = () => {
 
   return (
     <>
-      <Button ref={buttonRef} onClick={open}>Open Modal</Button>
+      <Button ref={buttonRef} onClick={open}>
+        Open Modal
+      </Button>
       <Modal
         contentSpacing
         id="story-book-modal"
@@ -32,6 +38,7 @@ export const Normal: Story = () => {
         title="Modal title"
         triggerElement={buttonRef.current}
         show={isOpen}
+        width={'full_width'}
       >
         <ModalContent>
           <p>Modal content goes here</p>
@@ -48,35 +55,26 @@ export const Normal: Story = () => {
 };
 
 export const Confirmation: Story = () => {
-  const { close, open, isOpen } = useDisclosure();
   const openModalButtonRef = React.useRef<HTMLButtonElement>(null);
-  const openModalButton = useHelperOpenModalButton({
-    title: "Header with icon",
-    open,
-    openModalButtonRef,
-  });
+  const { close, open, isOpen } = useDisclosure();
+
   return (
-    <div>
-      {openModalButton}
-      <Modal
-        id={"story-book-modal"}
-        title="Modal header with an Icon"
-        triggerElement={openModalButtonRef.current}
+    <>
+      <Button ref={openModalButtonRef} onClick={open}>
+        Confirm Button
+      </Button>
+      <ConfirmationModal
+        title="Confirmation"
+        description="Are you sure you want to do this ?"
         show={isOpen}
-        onClose={close}
-        closeButtonAriaLabel={"close"}
-        width={Modal.width.DEFAULT}
-        contentSpacing
-      >
-        <ModalHeader title={"Modal Heading"} iconColor="red" icon={Warning} iconSize={32} />
-        <ModalContent>Modal content goes here</ModalContent>
-        <ModalFooterButtons
-          primaryButtonText="Confirm"
-          secondaryButtonText="Cancel"
-          onPrimaryButtonClick={close}
-          onSecondaryButtonClick={close}
-        />
-      </Modal>
-    </div>
+        close={close}
+        openModalButtonRef={openModalButtonRef}
+        type="danger"
+        onConfirm={() => {
+            console.log("confirm clicked");
+            close();
+        }}
+      />
+    </>
   );
 };
