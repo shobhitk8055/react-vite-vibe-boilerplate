@@ -1,28 +1,24 @@
 import clsx from 'clsx';
 import * as React from 'react';
-import { useForm, UseFormReturn, SubmitHandler, UseFormProps, FieldValues } from 'react-hook-form';
-import { ZodType, ZodTypeDef } from 'zod';
+import { UseFormReturn, SubmitHandler, UseFormProps, FieldValues } from 'react-hook-form';
 
-type FormProps<TFormValues extends FieldValues, Schema> = {
+type FormProps<TFormValues extends FieldValues> = {
   className?: string;
   onSubmit: SubmitHandler<TFormValues>;
   children: React.ReactNode;
   options?: UseFormProps<TFormValues>;
   id?: string;
-  schema?: Schema;
   methods: UseFormReturn<TFormValues>;
 };
 
 export const Form = <
-  TFormValues extends Record<string, unknown> = Record<string, unknown>,
-  Schema extends ZodType<unknown, ZodTypeDef, unknown> = ZodType<unknown, ZodTypeDef, unknown>
->({
+  TFormValues extends Record<string, unknown> = Record<string, unknown>>({
   onSubmit,
   children,
   className,
   id,
   methods
-}: FormProps<TFormValues, Schema>) => {
+}: FormProps<TFormValues>) => {
   return (
     <form
       className={clsx('', className)}

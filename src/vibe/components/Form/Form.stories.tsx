@@ -1,10 +1,9 @@
 import { Meta, Story } from "@storybook/react";
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { optionalNum, requiredNum } from "@/lib/zodRules";
+import { optionalNum } from "@/lib/zodRules";
 import { Form } from "./Form";
-import { useForm } from "react-hook-form";
+import { useHookForm } from "@/hooks/useHookForm";
+import InputField from "./InputField";
 
 type FormValues = {
   string: string;
@@ -64,18 +63,17 @@ const multiOptions = [
 
 const MyForm = () => {
   const options = {};
-  const methods = useForm<FormValues>({
-    ...options,
-    resolver: schema && zodResolver(schema),
-  });
-  const { register, formState } = methods;
+  const methods = useHookForm<FormValues, typeof schema>(options, schema);
+  const { register, formState, reset, control } = methods;
+
+  const handleSubmit = () => {
+    reset();
+  };
 
   return (
-    <Form<FormValues, typeof schema>
-      onSubmit={() => console.log("submit hoja")}
-      methods={methods}
-    >
-      <p>a</p>
+    <Form<FormValues> onSubmit={handleSubmit} methods={methods}>
+      <InputField control={control} name="string" />
+      <button type="submit">BA</button>
     </Form>
   );
 };
