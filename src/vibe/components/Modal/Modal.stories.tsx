@@ -38,7 +38,6 @@ export const Normal: Story = () => {
         title="Modal title"
         triggerElement={buttonRef.current}
         show={isOpen}
-        width={'full_width'}
       >
         <ModalContent>
           <p>Modal content goes here</p>

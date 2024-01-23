@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UseFormProps, useForm } from "react-hook-form";
+import { Path, PathValue, UseFormProps, useForm } from "react-hook-form";
 import { ZodType, ZodTypeDef } from "zod";
 
 export const useHookForm = <
@@ -10,13 +10,21 @@ export const useHookForm = <
     unknown
   >
 >(
-  options: UseFormProps<TFormValues>,
-  schema: Schema
+  schema: Schema,
+  options?: UseFormProps<TFormValues>,
 ) => {
   const methods = useForm<TFormValues>({
     ...options,
     resolver: schema && zodResolver(schema),
   });
 
-  return methods;
+  const setValues = (valuesToSet: Partial<TFormValues>) => {
+    Object.keys(valuesToSet).forEach((fieldName) => {
+      methods.setValue(
+        fieldName as Path<TFormValues>,
+        valuesToSet[fieldName] as PathValue<TFormValues, Path<TFormValues>>
+      );
+    });
+  };
+  return { methods, setValues };
 };
