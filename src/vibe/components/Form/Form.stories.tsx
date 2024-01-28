@@ -1,6 +1,11 @@
 import { Meta, Story } from "@storybook/react";
 import * as z from "zod";
-import { optionalNum, optionalSelect, requiredNum, requiredSelect } from "@/lib/zodRules";
+import {
+  optionalNum,
+  optionalSelect,
+  requiredNum,
+  requiredSelect,
+} from "@/lib/zodRules";
 import { Form } from "./Form";
 import { useHookForm } from "@/hooks/useHookForm";
 import InputField from "./InputField";
@@ -9,6 +14,7 @@ import { useEffect, useState } from "react";
 import { TextFieldTextType } from "../TextField/TextFieldConstants";
 import SelectField from "./SelectField";
 import MultiSelectField from "./MultiSelectField";
+import InputDate from "./InputDate";
 
 type FormValues = {
   string: string;
@@ -77,7 +83,11 @@ const MyForm = () => {
   };
 
   useEffect(() => {
-    setValues({ string: "", password: "ab", multi: ['first_option_value', 'second_option_value'] });
+    setValues({
+      string: "",
+      password: "ab",
+      multi: [],
+    });
   }, []);
 
   return (
@@ -135,6 +145,16 @@ const MyForm = () => {
             placeholder="Select"
             title="Multi single"
             error={formState.errors["multi"]}
+          />
+        </div>
+        <div className="col-4">
+          <InputDate
+            control={control}
+            name="date"
+            size="medium"
+            title="Choose date"
+            placeholder="Please pick date"
+            error={formState.errors["password"]}
           />
         </div>
       </div>
