@@ -1,4 +1,5 @@
 export const defaultCustomStyles = baseStyles => baseStyles;
+import styles from "./Dropdown.module.scss";
 
 export const ADD_AUTO_HEIGHT_COMPONENTS = ["container", "control", "valueContainer"];
 
@@ -19,4 +20,10 @@ export const DROPDOWN_MENU_PLACEMENT = {
   TOP: "top",
   BOTTOM: "bottom",
   AUTO: "auto"
+};
+
+
+export const FEEDBACK_CLASSES = {
+  "error": styles.inputErrorValidation,
+  "success": styles.inputSuccessValidation
 };

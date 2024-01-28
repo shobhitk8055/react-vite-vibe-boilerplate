@@ -13,18 +13,21 @@ import OptionComponent from "./components/option/option";
 import SingleValueComponent from "./components/singleValue/singleValue";
 import ClearIndicatorComponent from "./components/ClearIndicator/ClearIndicator";
 import MultiValueContainer from "./components/MultiValueContainer/MultiValueContainer";
+import Text from "../Text/Text";
 import {
+  FEEDBACK_CLASSES,
   ADD_AUTO_HEIGHT_COMPONENTS,
   defaultCustomStyles,
   DROPDOWN_CHIP_COLORS,
   DROPDOWN_ID,
   DROPDOWN_MENU_PLACEMENT,
-  DROPDOWN_MENU_POSITION
+  DROPDOWN_MENU_POSITION,
 } from "./DropdownConstants";
 import generateBaseStyles, { customTheme } from "./Dropdown.styles";
 import Control from "./components/Control/Control";
 import menuStyles from "./components/menu/menu.module.scss";
 import styles from "./Dropdown.module.scss";
+import FieldLabel from "../FieldLabel/FieldLabel";
 
 const Dropdown = forwardRef(
   (
@@ -89,17 +92,24 @@ const Dropdown = forwardRef(
       popupsContainerSelector,
       filterOption,
       menuPosition,
-      "data-testid": dataTestId
+      "data-testid": dataTestId,
+      error,
+      title = '',
+      labelIconName,
+      iconsNames = {},
+      requiredAsterisk = false,
     },
     ref
   ) => {
     const controlRef = useRef();
     const overrideMenuPortalTarget =
-      menuPortalTarget || (popupsContainerSelector && document.querySelector(popupsContainerSelector));
+      menuPortalTarget ||
+      (popupsContainerSelector &&
+        document.querySelector(popupsContainerSelector));
     const overrideDefaultValue = useMemo(() => {
       if (defaultValue) {
         return Array.isArray(defaultValue)
-          ? defaultValue.map(df => ({ ...df, isMandatory: true }))
+          ? defaultValue.map((df) => ({ ...df, isMandatory: true }))
           : { ...defaultValue, isMandatory: true };
       }
 
@@ -113,7 +123,10 @@ const Dropdown = forwardRef(
     const selectedOptions = customValue ?? selected;
     const selectedOptionsMap = useMemo(() => {
       if (Array.isArray(selectedOptions)) {
-        return selectedOptions.reduce((acc, option) => ({ ...acc, [option.value]: option }), {});
+        return selectedOptions.reduce(
+          (acc, option) => ({ ...acc, [option.value]: option }),
+          {}
+        );
       }
       return {};
     }, [selectedOptions]);
@@ -122,7 +135,9 @@ const Dropdown = forwardRef(
       return (
         ariaLabel ||
         `${readOnly ? "Readonly " : ""} ${tooltipContent} ${
-          Array.isArray(selectedOptions) ? `Selected: ${selectedOptions.map(o => o.label).join(", ")}` : "Select"
+          Array.isArray(selectedOptions)
+            ? `Selected: ${selectedOptions.map((o) => o.label).join(", ")}`
+            : "Select"
         }`
       );
     }, [ariaLabel, readOnly, selectedOptions, tooltipContent]);
@@ -135,31 +150,36 @@ const Dropdown = forwardRef(
         rtl,
         insideOverflowContainer,
         controlRef,
-        insideOverflowWithTransformContainer
+        insideOverflowWithTransformContainer,
       });
 
       // Then we want to run the consumer's root-level custom styles with our "base" override groups.
       const customStyles = extraStyles(baseStyles);
 
       // Lastly, we create a style groups object that makes sure we run each custom group with our basic overrides.
-      const mergedStyles = Object.entries(customStyles).reduce((accumulator, [stylesGroup, stylesFn]) => {
-        return {
-          ...accumulator,
-          [stylesGroup]: (defaultStyles, state) => {
-            const provided = baseStyles[stylesGroup] ? baseStyles[stylesGroup](defaultStyles, state) : defaultStyles;
+      const mergedStyles = Object.entries(customStyles).reduce(
+        (accumulator, [stylesGroup, stylesFn]) => {
+          return {
+            ...accumulator,
+            [stylesGroup]: (defaultStyles, state) => {
+              const provided = baseStyles[stylesGroup]
+                ? baseStyles[stylesGroup](defaultStyles, state)
+                : defaultStyles;
 
-            return stylesFn(provided, state);
-          }
-        };
-      }, {});
+              return stylesFn(provided, state);
+            },
+          };
+        },
+        {}
+      );
 
       if (multi) {
         if (multiline) {
-          ADD_AUTO_HEIGHT_COMPONENTS.forEach(component => {
+          ADD_AUTO_HEIGHT_COMPONENTS.forEach((component) => {
             const original = mergedStyles[component];
             mergedStyles[component] = (provided, state) => ({
               ...original(provided, state),
-              height: "auto"
+              height: "auto",
             });
           });
         }
@@ -167,33 +187,55 @@ const Dropdown = forwardRef(
         const originalValueContainer = mergedStyles.valueContainer;
         mergedStyles.valueContainer = (provided, state) => ({
           ...originalValueContainer(provided, state),
-          paddingLeft: 6
+          paddingLeft: 6,
         });
       }
 
       return mergedStyles;
-    }, [size, rtl, insideOverflowContainer, insideOverflowWithTransformContainer, extraStyles, multi, multiline]);
+    }, [
+      size,
+      rtl,
+      insideOverflowContainer,
+      insideOverflowWithTransformContainer,
+      extraStyles,
+      multi,
+      multiline,
+    ]);
 
     const Menu = useCallback(
-      props => (
-        <MenuComponent {...props} Renderer={menuRenderer} dropdownMenuWrapperClassName={dropdownMenuWrapperClassName} />
+      (props) => (
+        <MenuComponent
+          {...props}
+          Renderer={menuRenderer}
+          dropdownMenuWrapperClassName={dropdownMenuWrapperClassName}
+        />
       ),
       [dropdownMenuWrapperClassName, menuRenderer]
     );
 
-    const DropdownIndicator = useCallback(props => <DropdownIndicatorComponent {...props} size={size} />, [size]);
+    const DropdownIndicator = useCallback(
+      (props) => <DropdownIndicatorComponent {...props} size={size} />,
+      [size]
+    );
 
     const Option = useCallback(
-      props => (
-        <OptionComponent {...props} Renderer={finalOptionRenderer} optionWrapperClassName={optionWrapperClassName} />
+      (props) => (
+        <OptionComponent
+          {...props}
+          Renderer={finalOptionRenderer}
+          optionWrapperClassName={optionWrapperClassName}
+        />
       ),
       [finalOptionRenderer, optionWrapperClassName]
     );
 
-    const Input = useCallback(props => <components.Input {...props} aria-label="Dropdown input" />, []);
+    const Input = useCallback(
+      (props) => <components.Input {...props} aria-label="Dropdown input" />,
+      []
+    );
 
     const SingleValue = useCallback(
-      props => (
+      (props) => (
         <SingleValueComponent
           {...props}
           readOnly={readOnly}
@@ -202,23 +244,38 @@ const Dropdown = forwardRef(
           singleValueWrapperClassName={singleValueWrapperClassName}
         />
       ),
-      [finalValueRenderer, readOnly, selectedOptions, singleValueWrapperClassName]
+      [
+        finalValueRenderer,
+        readOnly,
+        selectedOptions,
+        singleValueWrapperClassName,
+      ]
     );
 
-    const ClearIndicator = useCallback(props => <ClearIndicatorComponent {...props} size={size} />, [size]);
+    const ClearIndicator = useCallback(
+      (props) => <ClearIndicatorComponent {...props} size={size} />,
+      [size]
+    );
 
     const onOptionRemove = useMemo(() => {
       return function (optionValue, e) {
         if (customOnOptionRemove) {
           customOnOptionRemove(selectedOptionsMap[optionValue]);
         }
-        const newSelectedOptions = selectedOptions.filter(option => option.value !== optionValue);
+        const newSelectedOptions = selectedOptions.filter(
+          (option) => option.value !== optionValue
+        );
         if (customOnChange) {
           customOnChange(newSelectedOptions, e);
         }
         setSelected(newSelectedOptions);
       };
-    }, [customOnChange, customOnOptionRemove, selectedOptions, selectedOptionsMap]);
+    }, [
+      customOnChange,
+      customOnOptionRemove,
+      selectedOptions,
+      selectedOptionsMap,
+    ]);
 
     const customProps = useMemo(
       () => ({
@@ -229,7 +286,7 @@ const Dropdown = forwardRef(
         insideOverflowWithTransformContainer,
         controlRef,
         tooltipContent,
-        popupsContainerSelector
+        popupsContainerSelector,
       }),
       [
         selectedOptions,
@@ -238,7 +295,7 @@ const Dropdown = forwardRef(
         insideOverflowContainer,
         insideOverflowWithTransformContainer,
         tooltipContent,
-        popupsContainerSelector
+        popupsContainerSelector,
       ]
     );
     const onChange = (option, event) => {
@@ -279,92 +336,128 @@ const Dropdown = forwardRef(
       ...(asyncOptions && {
         loadOptions: asyncOptions,
         cacheOptions,
-        ...(defaultOptions && { defaultOptions })
-      })
+        ...(defaultOptions && { defaultOptions }),
+      }),
     };
 
     const additions = {
       ...(!asyncOptions && { options }),
       ...(multi && {
-        isMulti: true
-      })
+        isMulti: true,
+      }),
     };
 
     const closeMenuOnScroll = useCallback(
-      event => {
+      (event) => {
         const scrolledElement = event.target;
-        if (scrolledElement?.parentElement?.classList.contains(menuStyles.dropdownMenuWrapper)) {
+        if (
+          scrolledElement?.parentElement?.classList.contains(
+            menuStyles.dropdownMenuWrapper
+          )
+        ) {
           return false;
         }
-        return customCloseMenuOnScroll || insideOverflowContainer || insideOverflowWithTransformContainer;
+        return (
+          customCloseMenuOnScroll ||
+          insideOverflowContainer ||
+          insideOverflowWithTransformContainer
+        );
       },
-      [insideOverflowContainer, insideOverflowWithTransformContainer, customCloseMenuOnScroll]
+      [
+        insideOverflowContainer,
+        insideOverflowWithTransformContainer,
+        customCloseMenuOnScroll,
+      ]
     );
 
     return (
-      <DropDownComponent
-        className={cx(styles.dropdown, className)}
-        selectProps={customProps}
-        components={{
-          DropdownIndicator,
-          Menu,
-          ClearIndicator,
-          Input,
-          Option,
-          Control,
-          SingleValue,
-          ...(multi && {
-            MultiValue: NOOP, // We need it for react-select to behave nice with "multi"
-            ValueContainer: MultiValueContainer
-          }),
-          ...(isVirtualized)
-        }}
-        // When inside scroll we set the menu position by js and we can't follow the drop down location while use scrolling
-        closeMenuOnScroll={closeMenuOnScroll}
-        size={size}
-        noOptionsMessage={noOptionsMessage}
-        placeholder={placeholder}
-        isDisabled={disabled}
-        isClearable={!readOnly && clearable}
-        isSearchable={!readOnly && searchable}
-        readOnly={readOnly}
-        aria-readonly={readOnly}
-        aria-label={overrideAriaLabel}
-        aria-details={tooltipContent}
-        defaultValue={defaultValue}
-        value={value}
-        onMenuOpen={onMenuOpen}
-        onMenuClose={onMenuClose}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        onInputChange={onInputChange}
-        openMenuOnFocus={openMenuOnFocus}
-        openMenuOnClick={openMenuOnClick}
-        isRtl={rtl}
-        styles={inlineStyles}
-        theme={customTheme}
-        maxMenuHeight={maxMenuHeight}
-        menuPortalTarget={overrideMenuPortalTarget}
-        menuPlacement={menuPlacement}
-        menuPosition={menuPosition}
-        menuIsOpen={!readOnly && menuIsOpen}
-        tabIndex={tabIndex}
-        id={id}
-        data-testid={dataTestId || getTestId(ComponentDefaultTestId.DROPDOWN, id)}
-        autoFocus={autoFocus}
-        closeMenuOnSelect={closeMenuOnSelect}
-        ref={ref}
-        withMandatoryDefaultOptions={withMandatoryDefaultOptions}
-        isOptionSelected={isOptionSelected}
-        isLoading={isLoading}
-        loadingMessage={loadingMessage}
-        tabSelectsValue={tabSelectsValue}
-        filterOption={filterOption}
-        {...asyncAdditions}
-        {...additions}
-      />
+      <div>
+        <FieldLabel
+            labelText={title}
+            icon={labelIconName}
+            iconLabel={iconsNames.layout}
+            labelFor={id}
+            requiredAsterisk={requiredAsterisk}
+          />
+        <DropDownComponent
+          className={cx(styles.dropdown, className, error && error?.message && FEEDBACK_CLASSES['error'])}
+          selectProps={customProps}
+          components={{
+            DropdownIndicator,
+            Menu,
+            ClearIndicator,
+            Input,
+            Option,
+            Control,
+            SingleValue,
+            ...(multi && {
+              MultiValue: NOOP, // We need it for react-select to behave nice with "multi"
+              ValueContainer: MultiValueContainer,
+            }),
+            ...isVirtualized,
+          }}
+          // When inside scroll we set the menu position by js and we can't follow the drop down location while use scrolling
+          closeMenuOnScroll={closeMenuOnScroll}
+          size={size}
+          noOptionsMessage={noOptionsMessage}
+          placeholder={placeholder}
+          isDisabled={disabled}
+          isClearable={!readOnly && clearable}
+          isSearchable={!readOnly && searchable}
+          readOnly={readOnly}
+          aria-readonly={readOnly}
+          aria-label={overrideAriaLabel}
+          aria-details={tooltipContent}
+          defaultValue={defaultValue}
+          value={value}
+          onMenuOpen={onMenuOpen}
+          onMenuClose={onMenuClose}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+          onInputChange={onInputChange}
+          openMenuOnFocus={openMenuOnFocus}
+          openMenuOnClick={openMenuOnClick}
+          isRtl={rtl}
+          styles={inlineStyles}
+          theme={customTheme}
+          maxMenuHeight={maxMenuHeight}
+          menuPortalTarget={overrideMenuPortalTarget}
+          menuPlacement={menuPlacement}
+          menuPosition={menuPosition}
+          menuIsOpen={!readOnly && menuIsOpen}
+          tabIndex={tabIndex}
+          id={id}
+          data-testid={
+            dataTestId || getTestId(ComponentDefaultTestId.DROPDOWN, id)
+          }
+          autoFocus={autoFocus}
+          closeMenuOnSelect={closeMenuOnSelect}
+          ref={ref}
+          withMandatoryDefaultOptions={withMandatoryDefaultOptions}
+          isOptionSelected={isOptionSelected}
+          isLoading={isLoading}
+          loadingMessage={loadingMessage}
+          tabSelectsValue={tabSelectsValue}
+          filterOption={filterOption}
+          {...asyncAdditions}
+          {...additions}
+        />
+        {error && (
+          <Text
+            type={Text.types.TEXT2}
+            color={Text.colors.SECONDARY}
+            className={cx(styles.subTextContainer)}
+          >
+            {error && error?.message && (
+              <span className={cx(styles.subTextContainerStatus)}>
+                {error?.message}
+              </span>
+            )}
+          </Text>
+        )}
+      </div>
     );
   }
 );
@@ -376,7 +469,7 @@ Object.assign(Dropdown, {
   chipColors: DROPDOWN_CHIP_COLORS,
   menuPlacements: DROPDOWN_MENU_PLACEMENT,
   menuPositions: DROPDOWN_MENU_POSITION,
-  createFilter: createFilter
+  createFilter: createFilter,
 });
 
 Dropdown.defaultProps = {
@@ -416,7 +509,7 @@ Dropdown.defaultProps = {
   isLoading: false,
   loadingMessage: undefined,
   ariaLabel: undefined,
-  filterOption: undefined
+  filterOption: undefined,
 };
 
 Dropdown.propTypes = {
@@ -526,13 +619,13 @@ Dropdown.propTypes = {
     PropTypes.arrayOf(
       PropTypes.shape({
         label: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired
+        value: PropTypes.string.isRequired,
       })
     ),
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired
-    })
+      value: PropTypes.string.isRequired,
+    }),
   ]),
   /**
    * The component's value.
@@ -542,13 +635,13 @@ Dropdown.propTypes = {
     PropTypes.arrayOf(
       PropTypes.shape({
         label: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired
+        value: PropTypes.string.isRequired,
       })
     ),
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired
-    })
+      value: PropTypes.string.isRequired,
+    }),
   ]),
   /**
    * Select menu size from `Dropdown.size` - Dropdown.sizes.LARGE | Dropdown.sizes.MEDIUM | Dropdown.sizes.SMALL
@@ -561,8 +654,8 @@ Dropdown.propTypes = {
     PropTypes.func, // callback
     PropTypes.shape({
       then: PropTypes.func.isRequired,
-      catch: PropTypes.func.isRequired
-    }) // Promise
+      catch: PropTypes.func.isRequired,
+    }), // Promise
   ]),
   /**
    * If set to true, fetched async options will be cached
@@ -571,7 +664,10 @@ Dropdown.propTypes = {
   /**
    * If set, `asyncOptions` will be invoked with its value on mount and the resolved results will be loaded
    */
-  defaultOptions: PropTypes.oneOfType([PropTypes.bool, PropTypes.arrayOf(PropTypes.object)]),
+  defaultOptions: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.arrayOf(PropTypes.object),
+  ]),
   /**
    * If set to true, the menu will use virtualization. Virtualized async works only with
    */
@@ -668,7 +764,22 @@ Dropdown.propTypes = {
    * Overrides the build-in search filter logic - https://react-select.com/advanced#custom-filter-logic
    * createFilter function is available at Dropdown.createFilter
    */
-  filterOption: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+  filterOption: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+
+  error: PropTypes.any,
+  title: PropTypes.string,
+  labelIconName: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func,
+    PropTypes.oneOf([null]),
+  ]),
+  iconsNames: PropTypes.shape({
+    layout: PropTypes.string.isRequired,
+    primary: PropTypes.string.isRequired,
+    secondary: PropTypes.string.isRequired,
+  }),
+  requiredAsterisk: PropTypes.bool,
+
 };
 
 export default Dropdown;

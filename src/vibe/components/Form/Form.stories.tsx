@@ -1,6 +1,6 @@
 import { Meta, Story } from "@storybook/react";
 import * as z from "zod";
-import { optionalNum, requiredNum } from "@/lib/zodRules";
+import { optionalNum, optionalSelect, requiredNum, requiredSelect } from "@/lib/zodRules";
 import { Form } from "./Form";
 import { useHookForm } from "@/hooks/useHookForm";
 import InputField from "./InputField";
@@ -8,15 +8,16 @@ import { Button, Dropdown } from "@/vibe/components";
 import { useEffect, useState } from "react";
 import { TextFieldTextType } from "../TextField/TextFieldConstants";
 import SelectField from "./SelectField";
+import MultiSelectField from "./MultiSelectField";
 
 type FormValues = {
   string: string;
   password: string;
   numField: number;
-  // select: string;
+  select: string;
+  multi: string[];
   // date: Date;
   // dateRange: Date[];
-  // multi: string[];
   // creatable: string;
   // creatableMulti: string[];
   // areYouSure: boolean;
@@ -26,15 +27,15 @@ type FormValues = {
 };
 
 const schema = z.object({
-  string: z.string().min(1, "This key is required!"),
-  password: z.string().min(1, "Required"),
-  select: z.any(),
+  string: z.string().min(0, "Required"),
+  password: z.string(),
+  select: optionalSelect,
+  numField: optionalNum,
+  multi: z.string().array().min(0, "This field is required"),
   // date: z.date(),
   // dateRange: z.date().array(),
-  numField: requiredNum("This key is required"),
   // creatable: z.string().min(1, "Required"),
   // phone: z.string().min(1, "Required"),
-  // multi: z.string().array().min(1, "Required"),
   // creatableMulti: z.string().array().min(1, "Required"),
   // areYouSure: z.boolean(),
   // areYouSurePrivacy: z.boolean(),
@@ -76,7 +77,7 @@ const MyForm = () => {
   };
 
   useEffect(() => {
-    setValues({ string: "", numField: 90 });
+    setValues({ string: "", password: "ab", multi: ['first_option_value', 'second_option_value'] });
   }, []);
 
   return (
@@ -84,6 +85,7 @@ const MyForm = () => {
       <div className="row">
         <div className="col-4">
           <InputField
+            size="medium"
             control={control}
             name="string"
             title="String"
@@ -93,6 +95,7 @@ const MyForm = () => {
         </div>
         <div className="col-4">
           <InputField
+            size="medium"
             type={TextFieldTextType.NUMBER}
             control={control}
             name="numField"
@@ -106,14 +109,33 @@ const MyForm = () => {
             type={TextFieldTextType.PASSWORD}
             control={control}
             name="password"
+            size="medium"
             title="Password"
+            placeholder="Please enter password"
             error={formState.errors["password"]}
           />
         </div>
       </div>
       <div className="row mt-3">
         <div className="col-4">
-          <SelectField control={control} name="select" options={options} size={Dropdown.sizes.SMALL} />
+          <SelectField
+            control={control}
+            name="select"
+            options={options}
+            placeholder="Select"
+            title="Select single"
+            error={formState.errors["select"]}
+          />
+        </div>
+        <div className="col-4">
+          <MultiSelectField
+            control={control}
+            name="multi"
+            options={multiOptions}
+            placeholder="Select"
+            title="Multi single"
+            error={formState.errors["multi"]}
+          />
         </div>
       </div>
       <div className="row mt-3">

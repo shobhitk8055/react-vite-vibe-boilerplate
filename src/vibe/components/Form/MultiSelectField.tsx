@@ -9,19 +9,19 @@ type Option = {
   value: string | number;
 };
 
-type SelectFieldProps = TextFieldProps & {
+type MultiSelectFieldProps = TextFieldProps & {
   name: string;
   control: Control<any>;
   error?: any;
   options: Option[];
 };
 
-const SelectField = (props: SelectFieldProps): React.ReactElement => {
+const MultiSelectField = (props: MultiSelectFieldProps): React.ReactElement => {
   const { name, control, error, options } = props;
   const [internalValue, setInternalValue] = useState();
-  const getOption = (selectedOption: string) => {
-    return options.find(i => i.value === selectedOption);
-  }
+  const getOption = (selectedOption: string[]) => {
+    return options.filter((i: Option) => selectedOption?.includes(i.value.toString()));
+  };
   return (
     <div>
       <Controller
@@ -29,11 +29,18 @@ const SelectField = (props: SelectFieldProps): React.ReactElement => {
         control={control}
         render={({ field: { value, onChange } }) => (
           <>
+            {console.log(internalValue ? internalValue : getOption(value))}
             <Dropdown
               value={internalValue ? internalValue : getOption(value)}
               onChange={(value: any) => {
                 setInternalValue(value);
-                onChange(value?.value);
+                if (value) {
+                  const selected = value.map((i: Option) => i.value);
+                  onChange(selected)
+                } else {
+                  onChange([]);
+                }
+                // onChange(value?.value);
               }}
               className="dropdown-stories-styles_spacing"
               {...props}
@@ -41,6 +48,7 @@ const SelectField = (props: SelectFieldProps): React.ReactElement => {
                 status: error?.message ? "error" : "",
                 text: error?.message ?? "",
               }}
+              multi
               options={options}
             />
           </>
@@ -50,4 +58,4 @@ const SelectField = (props: SelectFieldProps): React.ReactElement => {
   );
 };
 
-export default SelectField;
+export default MultiSelectField;

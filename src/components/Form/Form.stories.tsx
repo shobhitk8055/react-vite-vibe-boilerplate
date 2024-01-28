@@ -102,12 +102,6 @@ const MyForm = () => {
         <>
           <div className="row">
             <div className="col-6">
-              <div className="mainBox" {...getRootProps()}>
-                <input {...getInputProps()} />
-                <p>Drag 'n' drop some files here, or click to select files</p>
-              </div>
-            </div>
-            <div className="col-6">
               <InputField
                 label="String"
                 error={formState.errors["string"]}
