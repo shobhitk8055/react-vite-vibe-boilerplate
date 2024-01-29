@@ -13,14 +13,14 @@ import { TextFieldProps } from "../TextField/TextField";
 import useSwitch from "@/vibe/hooks/useSwitch";
 import FieldLabel from "../FieldLabel/FieldLabel";
 import { Close } from "../Icon/Icons";
-import { Moment } from "../DatePicker/types";
+import { RangeDate } from "../DatePicker/types";
 import moment from "moment";
 import clsx from "clsx";
-import styles from "../Dropdown/Dropdown.module.scss";
 
 const EMPTY_OBJECT = { primary: "", secondary: "", layout: "" };
+const EMPTY_OBJECT_DATE = { startDate: null, endDate: null };
 
-type InputDateProps = TextFieldProps & {
+type InputDateRangeProps = TextFieldProps & {
   name: string;
   control: Control<any>;
   title?: string;
@@ -31,7 +31,7 @@ type InputDateProps = TextFieldProps & {
   placeholder?: string;
 };
 
-const InputDate = (props: InputDateProps): React.ReactElement => {
+const InputDateRange = (props: InputDateRangeProps): React.ReactElement => {
   const {
     name,
     control,
@@ -43,7 +43,7 @@ const InputDate = (props: InputDateProps): React.ReactElement => {
     id = "input",
     placeholder = "Choose a date",
   } = props;
-  const [date, setDate] = useState<Moment>();
+  const [date, setDate] = useState<RangeDate>(EMPTY_OBJECT_DATE);
 
   const modifiers = [
     {
@@ -57,9 +57,12 @@ const InputDate = (props: InputDateProps): React.ReactElement => {
     defaultChecked: false,
   });
 
-  const getCurrentValue = (defaultValue: string) => {
-    if (date) {
-      return date;
+  const getCurrentValue = (
+    defaultValue: string,
+    position: "startDate" | "endDate"
+  ) => {
+    if (date && date[position]) {
+      return date[position];
     }
     if (defaultValue) {
       return moment(defaultValue, "YYYY-MM-DD");
@@ -67,8 +70,8 @@ const InputDate = (props: InputDateProps): React.ReactElement => {
   };
 
   const getShowValue = (defaultValue: string) => {
-    if (date) {
-      return date.format("ll");
+    if (date && date.startDate && date.endDate) {
+      return `${date.startDate.format("ll")} to ${date.endDate.format("ll")}`;
     }
     if (defaultValue) {
       return moment(defaultValue, "YYYY-MM-DD").format("ll");
@@ -92,12 +95,16 @@ const InputDate = (props: InputDateProps): React.ReactElement => {
             content={
               <DialogContentContainer type="modal">
                 <DatePicker
-                  date={getCurrentValue(value)}
+                  date={getCurrentValue(value, "startDate")}
+                  endDate={getCurrentValue(value, "endDate")}
                   data-testid="date-picker"
-                  onPickDate={(d: Moment) => {
+                  range
+                  onPickDate={(d: RangeDate) => {
                     setDate(d);
-                    onChange(d.format("YYYY-MM-DD"));
-                    onChangeBottom();
+                    // onChange(d.format("YYYY-MM-DD"));
+                    if (d.endDate) {
+                      onChangeBottom();
+                    }
                   }}
                 />
               </DialogContentContainer>
@@ -114,7 +121,7 @@ const InputDate = (props: InputDateProps): React.ReactElement => {
               <span
                 className="close-btn"
                 onClick={() => {
-                  setDate(undefined);
+                  setDate(EMPTY_OBJECT_DATE);
                   onChange("");
                 }}
               >
@@ -156,4 +163,4 @@ const InputDate = (props: InputDateProps): React.ReactElement => {
   );
 };
 
-export default InputDate;
+export default InputDateRange;

@@ -29,7 +29,6 @@ const MultiSelectField = (props: MultiSelectFieldProps): React.ReactElement => {
         control={control}
         render={({ field: { value, onChange } }) => (
           <>
-            {console.log(internalValue ? internalValue : getOption(value))}
             <Dropdown
               value={internalValue ? internalValue : getOption(value)}
               onChange={(value: any) => {

@@ -42,3 +42,25 @@ span.passwordIcon.floating-icon {
 .clear-icon svg {
   fill: #cccccc;
 }
+
+span.close-btn {
+  position: absolute;
+  right: 10px;
+  top: 6px;
+  color: #00000054;
+  cursor: pointer;
+}
+
+span.close-btn:hover {
+  color: #000000;
+}
+
+.inputErrorValidation:hover {
+  border-color: var(--negative-color) !important;
+}
+.inputErrorValidation {
+  border-color: var(--negative-color) !important;
+}
+.inputErrorValidation.subTextContainer .subTextContainerStatus {
+  color: var(--negative-color);
+}

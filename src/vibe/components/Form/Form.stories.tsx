@@ -15,6 +15,7 @@ import { TextFieldTextType } from "../TextField/TextFieldConstants";
 import SelectField from "./SelectField";
 import MultiSelectField from "./MultiSelectField";
 import InputDate from "./InputDate";
+import InputDateRange from "./InputDateRange";
 
 type FormValues = {
   string: string;
@@ -22,8 +23,8 @@ type FormValues = {
   numField: number;
   select: string;
   multi: string[];
-  // date: Date;
-  // dateRange: Date[];
+  date: string;
+  dateRange: Date[];
   // creatable: string;
   // creatableMulti: string[];
   // areYouSure: boolean;
@@ -38,8 +39,8 @@ const schema = z.object({
   select: optionalSelect,
   numField: optionalNum,
   multi: z.string().array().min(0, "This field is required"),
-  // date: z.date(),
-  // dateRange: z.date().array(),
+  date: z.string().min(1, "This field is required"),
+  dateRange: z.string().array(),
   // creatable: z.string().min(1, "Required"),
   // phone: z.string().min(1, "Required"),
   // creatableMulti: z.string().array().min(1, "Required"),
@@ -77,7 +78,7 @@ const MyForm = () => {
   const { formState, control } = methods;
 
   const handleSubmit = (values: FormValues) => {
-    console.log(values);
+    console.log(values, formState.errors);
 
     // reset();
   };
@@ -87,6 +88,7 @@ const MyForm = () => {
       string: "",
       password: "ab",
       multi: [],
+      date: "",
     });
   }, []);
 
@@ -154,8 +156,20 @@ const MyForm = () => {
             size="medium"
             title="Choose date"
             placeholder="Please pick date"
-            error={formState.errors["password"]}
+            error={formState.errors["date"]}
           />
+        </div>
+        <div className="row mt-3">
+          <div className="col-4">
+            <InputDateRange
+              control={control}
+              name="dateRange"
+              size="medium"
+              title="Choose date range"
+              placeholder="Please pick date range"
+              error={formState.errors["dateRange"]}
+            />
+          </div>
         </div>
       </div>
       <div className="row mt-3">

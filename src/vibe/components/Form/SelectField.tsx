@@ -18,7 +18,7 @@ type SelectFieldProps = TextFieldProps & {
 
 const SelectField = (props: SelectFieldProps): React.ReactElement => {
   const { name, control, error, options } = props;
-  const [internalValue, setInternalValue] = useState();
+  const [internalValue, setInternalValue] = useState<Option>();
   const getOption = (selectedOption: string) => {
     return options.find(i => i.value === selectedOption);
   }
@@ -31,7 +31,7 @@ const SelectField = (props: SelectFieldProps): React.ReactElement => {
           <>
             <Dropdown
               value={internalValue ? internalValue : getOption(value)}
-              onChange={(value: any) => {
+              onChange={(value: Option) => {
                 setInternalValue(value);
                 onChange(value?.value);
               }}
