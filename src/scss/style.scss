@@ -28,6 +28,11 @@ span.passwordIcon.floating-icon {
   background-color: #ededed;
   cursor: pointer;
 }
+.phone-control {
+  border-color: var(--ui-border-color) !important;
+  line-height: 1.5 !important;
+  border-radius: var(--border-radius-small) !important;
+}
 .phone-control input {
   border: none;
 }

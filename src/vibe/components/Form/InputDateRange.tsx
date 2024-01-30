@@ -64,17 +64,20 @@ const InputDateRange = (props: InputDateRangeProps): React.ReactElement => {
     if (date && date[position]) {
       return date[position];
     }
-    if (defaultValue) {
-      return moment(defaultValue, "YYYY-MM-DD");
+    const pos = { startDate: 0, endDate: 1 };
+    if (defaultValue && defaultValue.length >= 2) {
+      return moment(defaultValue[pos[position]], "YYYY-MM-DD");
     }
   };
 
-  const getShowValue = (defaultValue: string) => {
+  const getShowValue = (defaultValue: string[]) => {
     if (date && date.startDate && date.endDate) {
       return `${date.startDate.format("ll")} to ${date.endDate.format("ll")}`;
     }
-    if (defaultValue) {
-      return moment(defaultValue, "YYYY-MM-DD").format("ll");
+    const getM = (index: number) =>
+      moment(defaultValue[index], "YYYY-MM-DD").format("ll");
+    if (defaultValue && defaultValue.length >= 2) {
+      return `${getM(0)} to ${getM(1)}`;
     }
     return placeholder;
   };
@@ -101,10 +104,15 @@ const InputDateRange = (props: InputDateRangeProps): React.ReactElement => {
                   range
                   onPickDate={(d: RangeDate) => {
                     setDate(d);
-                    // onChange(d.format("YYYY-MM-DD"));
+                    const val = [];
+                    if (d.startDate) {
+                      val.push(d.startDate.format("YYYY-MM-DD"));
+                    }
                     if (d.endDate) {
+                      val.push(d.endDate.format("YYYY-MM-DD"));
                       onChangeBottom();
                     }
+                    onChange(val);
                   }}
                 />
               </DialogContentContainer>

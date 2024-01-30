@@ -16,6 +16,7 @@ import SelectField from "./SelectField";
 import MultiSelectField from "./MultiSelectField";
 import InputDate from "./InputDate";
 import InputDateRange from "./InputDateRange";
+import InputPhone from "./InputPhone";
 
 type FormValues = {
   string: string;
@@ -24,13 +25,13 @@ type FormValues = {
   select: string;
   multi: string[];
   date: string;
-  dateRange: Date[];
+  dateRange: string[];
   // creatable: string;
   // creatableMulti: string[];
   // areYouSure: boolean;
   // areYouSurePrivacy: boolean;
   // radioOptions: string;
-  // phone: string;
+  phone: string;
 };
 
 const schema = z.object({
@@ -42,7 +43,7 @@ const schema = z.object({
   date: z.string().min(1, "This field is required"),
   dateRange: z.string().array(),
   // creatable: z.string().min(1, "Required"),
-  // phone: z.string().min(1, "Required"),
+  phone: z.string().min(1, "Required"),
   // creatableMulti: z.string().array().min(1, "Required"),
   // areYouSure: z.boolean(),
   // areYouSurePrivacy: z.boolean(),
@@ -89,6 +90,7 @@ const MyForm = () => {
       password: "ab",
       multi: [],
       date: "",
+      dateRange: ["2023-01-01", "2023-02-22"],
     });
   }, []);
 
@@ -159,18 +161,25 @@ const MyForm = () => {
             error={formState.errors["date"]}
           />
         </div>
-        <div className="row mt-3">
-          <div className="col-4">
-            <InputDateRange
+        <div className="col-4 mt-3">
+          <InputDateRange
+            control={control}
+            name="dateRange"
+            size="medium"
+            title="Choose date range"
+            placeholder="Please pick date range"
+            error={formState.errors["dateRange"]}
+          />
+        </div>
+        <div className="col-4 mt-3">
+            <InputPhone
               control={control}
-              name="dateRange"
+              name="phone"
               size="medium"
-              title="Choose date range"
               placeholder="Please pick date range"
-              error={formState.errors["dateRange"]}
+              error={formState.errors["phone"]}
             />
           </div>
-        </div>
       </div>
       <div className="row mt-3">
         <div className="col-6">
