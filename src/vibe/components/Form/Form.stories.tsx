@@ -175,7 +175,6 @@ const MyForm = () => {
             <InputPhone
               control={control}
               name="phone"
-              size="medium"
               placeholder="Please pick date range"
               error={formState.errors["phone"]}
             />
