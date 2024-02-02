@@ -17,6 +17,8 @@ import MultiSelectField from "./MultiSelectField";
 import InputDate from "./InputDate";
 import InputDateRange from "./InputDateRange";
 import InputPhone from "./InputPhone";
+import { CheckboxField } from "./CheckboxField";
+import { RadioField } from "./RadioField";
 
 type FormValues = {
   string: string;
@@ -28,9 +30,9 @@ type FormValues = {
   dateRange: string[];
   // creatable: string;
   // creatableMulti: string[];
-  // areYouSure: boolean;
-  // areYouSurePrivacy: boolean;
-  // radioOptions: string;
+  areYouSure: boolean;
+  areYouSurePrivacy: boolean;
+  radioOptions: string;
   phone: string;
 };
 
@@ -42,14 +44,14 @@ const schema = z.object({
   multi: z.string().array().min(0, "This field is required"),
   date: z.string().min(1, "This field is required"),
   dateRange: z.string().array(),
-  // creatable: z.string().min(1, "Required"),
-  phone: z.string().min(1, "Required"),
-  // creatableMulti: z.string().array().min(1, "Required"),
-  // areYouSure: z.boolean(),
-  // areYouSurePrivacy: z.boolean(),
-  // radioOptions: z
-  //   .string({ invalid_type_error: "Required " })
-  //   .min(1, "Required"),
+  phone: ((msg) => z.string({ required_error: msg }).min(1, msg))(
+    "This phone number is required"
+  ),
+  areYouSure: z.boolean(),
+  areYouSurePrivacy: z.boolean(),
+  radioOptions: z
+    .string({ invalid_type_error: "Required " })
+    .min(1, "Required"),
 });
 
 const options = [
@@ -76,7 +78,7 @@ const multiOptions = [
 
 const MyForm = () => {
   const { methods, setValues } = useHookForm<FormValues, typeof schema>(schema);
-  const { formState, control } = methods;
+  const { formState, control, register } = methods;
 
   const handleSubmit = (values: FormValues) => {
     console.log(values, formState.errors);
@@ -87,10 +89,11 @@ const MyForm = () => {
   useEffect(() => {
     setValues({
       string: "",
-      password: "ab",
+      password: "",
       multi: [],
       date: "",
-      dateRange: ["2023-01-01", "2023-02-22"],
+      dateRange: [],
+      phone: ""
     });
   }, []);
 
@@ -171,14 +174,37 @@ const MyForm = () => {
             error={formState.errors["dateRange"]}
           />
         </div>
+
         <div className="col-4 mt-3">
-            <InputPhone
-              control={control}
-              name="phone"
-              placeholder="Please pick date range"
-              error={formState.errors["phone"]}
-            />
-          </div>
+          <InputPhone
+            control={control}
+            name="phone"
+            title="Enter phone number"
+            error={formState.errors["phone"]}
+          />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-4 mt-3">
+          <CheckboxField
+            label="Please accept terms and conditions"
+            registration={register("areYouSure")}
+            error={formState.errors["areYouSure"]}
+          />
+          <CheckboxField
+            label="Please accept privacy policy"
+            registration={register("areYouSurePrivacy")}
+            error={formState.errors["areYouSurePrivacy"]}
+          />
+        </div>
+        <div className="col-4 mt-3">
+          <RadioField
+            label="Select one platform"
+            options={options}
+            registration={register("radioOptions")}
+            error={formState.errors["radioOptions"]}
+          />
+        </div>
       </div>
       <div className="row mt-3">
         <div className="col-6">

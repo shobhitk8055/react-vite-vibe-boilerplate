@@ -16,7 +16,6 @@ import { Close } from "../Icon/Icons";
 import { Moment } from "../DatePicker/types";
 import moment from "moment";
 import clsx from "clsx";
-import styles from "../Dropdown/Dropdown.module.scss";
 
 const EMPTY_OBJECT = { primary: "", secondary: "", layout: "" };
 

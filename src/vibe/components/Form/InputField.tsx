@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { TextField } from "@/vibe/components";
-import { Controller, UseFormRegisterReturn, Control } from "react-hook-form";
+import { Controller, Control } from "react-hook-form";
 import { TextFieldProps } from "../TextField/TextField";
+import { Hide, Show } from "../Icon/Icons";
 
 type InputFieldProps = TextFieldProps & {
   name: string;
@@ -12,6 +13,13 @@ type InputFieldProps = TextFieldProps & {
 
 const InputField = (props: InputFieldProps): React.ReactElement => {
   const { name, control, error, type } = props;
+  const [showIcon, setShowIcon] = useState(true);
+
+  const getIcon = () => {
+    if (type && type === "password") {
+      return  showIcon ? Show : Hide;
+    }
+  };
 
   return (
     <div>
@@ -22,17 +30,15 @@ const InputField = (props: InputFieldProps): React.ReactElement => {
           <TextField
             value={value}
             {...props}
-            onChange={(value) => {
-              if(type && type === "number"){
-                onChange(+value);
-              }else{
-                onChange(value);
-              }
+            onChange={(value: string) => {
+              onChange(type && type === "number" ? +value : value);
             }}
             validation={{
-              status: error?.message ? 'error' : '',
-              text: error?.message ?? ''
+              status: error?.message ? "error" : "",
+              text: error?.message ?? "",
             }}
+            iconName={getIcon()}
+            onIconClick={() => setShowIcon(!showIcon)}
           />
         )}
       />
