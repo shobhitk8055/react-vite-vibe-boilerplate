@@ -1,5 +1,7 @@
+import { AttentionBox } from "@/vibe/components";
 import "./notification.css";
 import { motion, AnimatePresence } from "framer-motion";
+import { ThumbsUp } from "@/vibe/components/Icon/Icons";
 
 const icons = {
   info: <i className="fa-solid fa-circle-info text-blue"></i>,
@@ -20,27 +22,28 @@ export type NotificationProps = {
 };
 
 export const Notification = ({
-  notification: { id, type, title, message, show },
+  notification: { id, type, title, message },
   onDismiss,
 }: NotificationProps) => {
   return (
     <AnimatePresence>
-      {show && (
-        <motion.div
-          initial={{ x: 500 }}
-          animate={{ x: 0 }}
-          exit={{ x: 500 }}
-          transition={{ type: "spring", damping: 10, stiffness: 70 }}
-          className="alert alert-light shadow-lg rounded-lg w-35"
-          role="alert"
-          onClick={() => onDismiss(id)}
-        >
-          <h6 className="alert-heading not-icon">
-            {icons[type]} <span className="ps-2"> {title}</span>
-          </h6>
-          <p className="not-msg">{message}</p>
-        </motion.div>
-      )}
+      <motion.div
+        initial={{ x: 500 }}
+        animate={{ x: 0 }}
+        exit={{ x: 500 }}
+        transition={{ type: "spring", damping: 10, stiffness: 70 }}
+        className="shadow-lg rounded-lg w-35"
+        role="alert"
+        onClick={() => onDismiss(id)}
+      >
+        <AttentionBox
+          title="You're doing great"
+          text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+          type={AttentionBox.types.SUCCESS}
+          className="monday-storybook-attention-box_box"
+          icon={ThumbsUp}
+        />
+      </motion.div>
     </AnimatePresence>
   );
 };

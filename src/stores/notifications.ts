@@ -16,15 +16,7 @@ type NotificationsStore = {
 };
 
 export const useNotificationStore = create<NotificationsStore>((set) => ({
-  notifications: [
-    {
-      id: "1",
-      type: "info",
-      title: "Good title",
-      message: "Good message",
-      show: false,
-    },
-  ],
+  notifications: [],
   addNotification: (notification) =>
     set((state) => ({
       notifications: [
@@ -34,11 +26,6 @@ export const useNotificationStore = create<NotificationsStore>((set) => ({
     })),
   dismissNotification: (id) =>
     set((state) => ({
-      notifications: state.notifications.map((notification) => {
-        if (notification.id === id) {
-          // notification.show = false;
-        }
-        return notification;
-      }),
+      notifications: state.notifications.filter((notification) => notification.id !== id),
     })),
 }));
