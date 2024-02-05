@@ -118,7 +118,7 @@ const TextField: VibeComponent<TextFieldProps, unknown> & {
       secondaryIconName,
       id = "input",
       title = "",
-      size = TextField.sizes.SMALL,
+      size = TextField.sizes?.MEDIUM,
       validation = null,
       wrapperClassName = "",
       onIconClick = NOOP,
@@ -298,7 +298,7 @@ const TextField: VibeComponent<TextFieldProps, unknown> & {
               tabIndex={
                 onIconClick !== NOOP &&
                 inputValue &&
-                iconName.length &&
+                iconName?.length &&
                 isPrimary
                   ? "0"
                   : "-1"

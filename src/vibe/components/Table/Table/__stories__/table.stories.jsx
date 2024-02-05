@@ -26,7 +26,7 @@ import {
 
 
 export default {
-  title: "Data display/Table",
+  title: "Example/VibeTable",
   component: Table,
   subcomponents: {
     TableHeader,
@@ -36,6 +36,7 @@ export default {
     TableCell,
     TableVirtualizedBody
   },
+  tags: ['autodocs'],
 };
 
 const tableTemplate = args => <Table {...args}></Table>;

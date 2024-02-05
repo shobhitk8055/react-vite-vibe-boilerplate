@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Notifications } from "@/components/Notifications/Notifications";
 import { queryClient } from "@/lib/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Spinner } from "@/components/Elements";
+import { Spinner } from '@/vibe/components';
 import { AnimatePresence } from "framer-motion";
 
 const ErrorFallback = () => {

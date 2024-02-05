@@ -1,6 +1,6 @@
 import { configureAuth } from "react-query-auth";
 
-import { Spinner } from '@/components/Elements';
+import { Spinner } from '@/vibe/components';
 import {
   loginWithEmailAndPassword,
   getUser,

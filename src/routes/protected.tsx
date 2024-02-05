@@ -1,4 +1,4 @@
-import { Spinner } from "@/components/Elements";
+import { Spinner } from '@/vibe/components';
 import Layout from "@/components/Layout/Layout";
 import { AdminRoutes } from "@/features/admin";
 import { Suspense } from "react";

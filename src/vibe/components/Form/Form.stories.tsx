@@ -79,10 +79,9 @@ const multiOptions = [
 const MyForm = () => {
   const { methods, setValues } = useHookForm<FormValues, typeof schema>(schema);
   const { formState, control, register } = methods;
-
+  
   const handleSubmit = (values: FormValues) => {
     console.log(values, formState.errors);
-
     // reset();
   };
 
@@ -93,7 +92,7 @@ const MyForm = () => {
       multi: [],
       date: "",
       dateRange: [],
-      phone: ""
+      phone: "",
     });
   }, []);
 
@@ -208,7 +207,9 @@ const MyForm = () => {
       </div>
       <div className="row mt-3">
         <div className="col-6">
-          <Button type="submit">Submit</Button>
+          <Button type="button">
+            Submit
+          </Button>
         </div>
       </div>
     </Form>
@@ -216,7 +217,7 @@ const MyForm = () => {
 };
 
 const meta: Meta = {
-  title: "Example/VibeForm",
+  title: "Example/Form",
   component: MyForm,
   parameters: {
     controls: { expanded: true },

@@ -1,23 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 import * as z from "zod";
-import { Form, InputField } from "@/components/Form";
+import { Form, InputField } from "@/vibe/components";
 import { useLogin } from "@/lib/auth";
 import "../routes/auth.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { animations } from "./Layout";
 import useAnimateFn from "@/hooks/animate";
-import {
-  DatePicker,
-  Dialog,
-  DialogContentContainer,
-  Button,
-} from "@/vibe/components";
-import useSwitch from "@/vibe/hooks/useSwitch";
-import { useState } from "react";
+import { Button } from "@/vibe/components";
+import { useHookForm } from "@/hooks/useHookForm";
+import { TextFieldTextType } from "@/vibe/components/TextField/TextFieldConstants";
 
 const schema = z.object({
-  email: z.string().min(1, "Please enter email address"),
-  password: z.string().min(1, "Please enter password"),
+  email: ((msg: string) => z.string({ required_error: msg }).min(1, msg))(
+    "Please enter email address"
+  ),
+  password: ((msg: string) => z.string({ required_error: msg }).min(1, msg))(
+    "Please enter password"
+  ),
 });
 
 type LoginValues = {
@@ -30,102 +29,53 @@ type LoginFormProps = {
 };
 
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+  const { methods } = useHookForm<LoginValues, typeof schema>(schema);
+  const { formState, control } = methods;
+
   const login = useLogin();
   const navigate = useNavigate();
-  const [date, setDate] = useState({});
-  const [formattedDate, setFormattedDate] = useState("");
   const { animate, callAfterAnimateFn } = useAnimateFn();
-  const modifiers = [
-    {
-      name: "preventOverflow",
-      options: {
-        mainAxis: false,
-      },
-    },
-  ];
-
-  const { isChecked: checkedBottom, onChange: onChangeBottom } = useSwitch({
-    defaultChecked: false,
-  });
-
 
   return (
     <AnimatePresence>
       {animate && (
         <motion.div {...animations}>
           <div className="card p-4 mt-4 mx-4">
-            <Form<LoginValues, typeof schema>
+            <Form<LoginValues>
               onSubmit={async (values) => {
-                values;
+                console.log(values);
+                
+                // values;
                 // onSuccess();
-                login.mutate(values, { onSuccess });
+                // login.mutate(values, { onSuccess });
               }}
-              options={{
-                defaultValues: {
-                  email: "baba@yopmail.com",
-                  password: "@3",
-                },
-              }}
-              schema={schema}
+              methods={methods}
             >
-              {({ register, formState }) => (
-                <>
-                  <InputField
-                    type="email"
-                    label="Email Address"
-                    error={formState.errors["email"]}
-                    registration={register("email")}
-                  />
-                  <InputField
-                    type="password"
-                    label="Password"
-                    error={formState.errors["password"]}
-                    registration={register("password")}
-                  />
-                  <Dialog
-                    modifiers={modifiers}
-                    onClickOutside={onChangeBottom}
-                    position={Dialog.positions.BOTTOM}
-                    showTrigger={[]}
-                    hideTrigger={[]}
-                    open={checkedBottom}
-                    content={
-                      <DialogContentContainer type="modal">
-                        <DatePicker
-                          date={date.startDate}
-                          data-testid="date-picker"
-                          onPickDate={(d) => {
-                            setDate(d);
-
-                            setFormattedDate(d.format("ll"));
-                            setTimeout(() => {
-                              onChangeBottom();
-                            }, 200);
-                          }}
-                        />
-                      </DialogContentContainer>
-                    }
-                  >
-                    <Button
-                      kind={Button.kinds.SECONDARY}
-                      onClick={onChangeBottom}
-                      active={checkedBottom}
-                    >
-                      {formattedDate === "" ? "Choose a date" : formattedDate}
-                    </Button>
-                  </Dialog>
-                  <div className="d-flex justify-content-center">
-                    <Button
-                      startIcon={<i className="fa-solid fa-lock" />}
-                      isLoading={login.isLoading}
-                      type="submit"
-                      className="w-100"
-                    >
-                      Log In
-                    </Button>
-                  </div>
-                </>
-              )}
+              <InputField
+                control={control}
+                type={TextFieldTextType.TEXT}
+                title="Email Address"
+                error={formState.errors["email"]}
+                name="email"
+              />
+              <InputField
+                control={control}
+                type={TextFieldTextType.PASSWORD}
+                title="Password"
+                error={formState.errors["password"]}
+                name="password"
+                wrapperClassName="mt-3"
+              />
+              <div className="d-flex justify-content-center">
+                <Button
+                  startIcon={<i className="fa-solid fa-lock" />}
+                  isLoading={login.isLoading}
+                  type="submit"
+                  className="w-100 mt-3 "
+                >
+                  Log In
+                </Button>
+              </div>
             </Form>
             <Link
               to="#"

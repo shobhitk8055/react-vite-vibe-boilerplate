@@ -1,4 +1,4 @@
-import { Table } from '@/components/Elements/Table/Table'
+import { Table } from '@/components/Elements/SimpleTable/Table'
 import ContentWrapper from '@/components/Layout/ContentWrapper'
 
 export const Users = () => {

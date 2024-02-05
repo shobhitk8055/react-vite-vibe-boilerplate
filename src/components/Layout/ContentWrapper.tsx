@@ -1,5 +1,5 @@
 import React from "react";
-import { Head } from "../Head";
+import { Head } from "../../vibe/components/Head";
 import { AnimatePresence, motion } from "framer-motion";
 
 const ContentWrapper = ({

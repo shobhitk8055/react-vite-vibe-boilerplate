@@ -11,7 +11,7 @@ type FormProps<TFormValues extends FieldValues> = {
   methods: UseFormReturn<TFormValues>;
 };
 
-export const Form = <
+const Form = <
   TFormValues extends Record<string, unknown> = Record<string, unknown>>({
   onSubmit,
   children,
@@ -29,3 +29,5 @@ export const Form = <
     </form>
   );
 };
+
+export default Form;

@@ -1,6 +1,6 @@
 // import { useNavigate } from "react-router-dom";
 
-import { RegisterForm } from "../components/RegisterForm";
+// import { RegisterForm } from "../components/RegisterForm";
 import { LoginLayout } from "../components/Layout";
 
 export const Register = () => {
@@ -8,7 +8,7 @@ export const Register = () => {
 
   return (
     <LoginLayout title="Register">
-      <RegisterForm onSuccess={() => null} />
+      {/* <RegisterForm onSuccess={() => null} /> */}
     </LoginLayout>
   );
 };
