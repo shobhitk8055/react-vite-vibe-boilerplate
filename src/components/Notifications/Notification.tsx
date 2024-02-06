@@ -1,11 +1,12 @@
 import { AttentionBox } from "@/vibe/components";
 import "./notification.css";
 import { motion, AnimatePresence } from "framer-motion";
-import { ThumbsUp } from "@/vibe/components/Icon/Icons";
+import { Info, ThumbsUp } from "@/vibe/components/Icon/Icons";
+import { useNotificationStore } from "@/stores/notifications";
 
 const icons = {
-  info: <i className="fa-solid fa-circle-info text-blue"></i>,
   success: <i className="fa-regular fa-circle-check text-success"></i>,
+  info: <i className="fa-solid fa-circle-info text-blue"></i>,
   warning: <i className="fa-solid fa-circle-exclamation text-warning"></i>,
   error: <i className="fa-regular fa-circle-xmark text-danger"></i>,
 };
@@ -18,13 +19,31 @@ export type NotificationProps = {
     message?: string;
     show: boolean;
   };
-  onDismiss: (id: string) => void;
+};
+
+export const NotType = {
+  success: AttentionBox.types.SUCCESS,
+  error: AttentionBox.types.DANGER,
+  info: undefined,
+  warning: AttentionBox.types.WARNING,
+};
+
+export const NotIcon = {
+  success: ThumbsUp,
+  error: undefined,
+  info: Info,
+  warning: undefined,
 };
 
 export const Notification = ({
   notification: { id, type, title, message },
-  onDismiss,
 }: NotificationProps) => {
+  const { dismissNotification } = useNotificationStore();
+
+  const onDismis = () => {
+    dismissNotification(id);
+  };
+
   return (
     <AnimatePresence>
       <motion.div
@@ -32,16 +51,17 @@ export const Notification = ({
         animate={{ x: 0 }}
         exit={{ x: 500 }}
         transition={{ type: "spring", damping: 10, stiffness: 70 }}
-        className="shadow-lg rounded-lg w-35"
+        className="shadow-lg rounded-lg w-25"
         role="alert"
-        onClick={() => onDismiss(id)}
+        onClick={onDismis}
       >
         <AttentionBox
-          title="You're doing great"
-          text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-          type={AttentionBox.types.SUCCESS}
-          className="monday-storybook-attention-box_box"
-          icon={ThumbsUp}
+          title={title}
+          text={message}
+          type={NotType[type]}
+          className="monday-storybook-attention-box_box w-100"
+          icon={NotIcon[type]}
+          onClose={onDismis}
         />
       </motion.div>
     </AnimatePresence>

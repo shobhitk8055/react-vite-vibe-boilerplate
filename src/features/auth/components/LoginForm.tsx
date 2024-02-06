@@ -9,6 +9,7 @@ import useAnimateFn from "@/hooks/animate";
 import { Button } from "@/vibe/components";
 import { useHookForm } from "@/hooks/useHookForm";
 import { TextFieldTextType } from "@/vibe/components/TextField/TextFieldConstants";
+import { useNotificationStore } from "@/stores/notifications";
 
 const schema = z.object({
   email: ((msg: string) => z.string({ required_error: msg }).min(1, msg))(
@@ -35,6 +36,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const login = useLogin();
   const navigate = useNavigate();
   const { animate, callAfterAnimateFn } = useAnimateFn();
+  const { addNotification } = useNotificationStore();
 
   return (
     <AnimatePresence>
@@ -44,10 +46,9 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             <Form<LoginValues>
               onSubmit={async (values) => {
                 console.log(values);
-                
                 // values;
                 // onSuccess();
-                // login.mutate(values, { onSuccess });
+                login.mutate(values, { onSuccess });
               }}
               methods={methods}
             >
