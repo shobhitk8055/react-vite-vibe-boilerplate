@@ -15,7 +15,7 @@ export const Notifications = () => {
   }, [notifications]);
 
   return (
-    <div className="d-flex flex-col fixed inset-0 space-y-4 align-items-end px-4 py-6 sm:p-6 sm:items-start">
+    <div className="z-50 d-flex flex-col fixed inset-0 space-y-4 align-items-end pointer-events-none px-4 py-6 sm:p-6 sm:items-start">
       {notifications.map((notification) => (
         <Notification
           key={notification.id}

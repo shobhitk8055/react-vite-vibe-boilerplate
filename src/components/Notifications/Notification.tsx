@@ -51,7 +51,7 @@ export const Notification = ({
         animate={{ x: 0 }}
         exit={{ x: 500 }}
         transition={{ type: "spring", damping: 10, stiffness: 70 }}
-        className="shadow-lg rounded-lg w-25"
+        className="shadow-lg rounded-lg w-25 pointer-events-all"
         role="alert"
         onClick={onDismis}
       >
