@@ -1,5 +1,5 @@
 import { Spinner } from '@/vibe/components';
-import Layout from "@/components/Layout/Layout";
+import Layout from "@/containers/Layout/Layout";
 import { AdminRoutes } from "@/features/admin";
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
