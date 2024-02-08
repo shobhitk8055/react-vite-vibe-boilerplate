@@ -12,15 +12,14 @@ type InputFieldProps = TextFieldProps & {
 };
 
 const InputField = (props: InputFieldProps): React.ReactElement => {
-  const { name, control, error, type } = props;
+  const { name, control, error, type = 'text' } = props;
   const [showIcon, setShowIcon] = useState(true);
 
   const getIcon = () => {
     if (type && type === "password") {
-      return  showIcon ? Show : Hide;
+      return showIcon ? Show : Hide;
     }
   };
-
   return (
     <div>
       <Controller
@@ -30,6 +29,12 @@ const InputField = (props: InputFieldProps): React.ReactElement => {
           <TextField
             value={value}
             {...props}
+            type={(() => {
+              if (type === "password") {
+                return !showIcon ? 'text' : 'password'
+              }
+              return type
+            })()}
             onChange={(value: string) => {
               onChange(type && type === "number" ? +value : value);
             }}
