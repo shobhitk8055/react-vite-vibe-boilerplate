@@ -7,7 +7,7 @@ import {
   MenuItemStyles,
 } from "react-pro-sidebar";
 import { SidebarHeader } from "./components/SidebarHeader";
-import { colors } from "@/containers/config";
+import { colors } from "@/constants/config";
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";

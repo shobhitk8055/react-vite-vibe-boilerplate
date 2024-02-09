@@ -6,7 +6,7 @@ import {
   requiredNum,
   requiredSelect,
 } from "@/lib/zodRules";
-import { Form } from "./Form";
+import Form from "./Form";
 import { useHookForm } from "@/hooks/useHookForm";
 import InputField from "./InputField";
 import { Button, Dropdown } from "@/vibe/components";
@@ -79,6 +79,7 @@ const multiOptions = [
 const MyForm = () => {
   const { methods, setValues } = useHookForm<FormValues, typeof schema>(schema);
   const { formState, control, register } = methods;
+  console.log(formState.errors);
   
   const handleSubmit = (values: FormValues) => {
     console.log(values, formState.errors);
@@ -207,7 +208,7 @@ const MyForm = () => {
       </div>
       <div className="row mt-3">
         <div className="col-6">
-          <Button type="button">
+          <Button type="submit">
             Submit
           </Button>
         </div>

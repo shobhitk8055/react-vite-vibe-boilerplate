@@ -1,4 +1,4 @@
-import ContentWrapper from '@/components/Layout/ContentWrapper'
+import ContentWrapper from '@/features/admin/Layout/ContentWrapper'
 import { useNotificationStore } from '@/stores/notifications'
 import { Button } from '@/vibe/components'
 

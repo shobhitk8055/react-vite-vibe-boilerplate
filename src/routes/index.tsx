@@ -9,13 +9,9 @@ import { useUser } from "@/lib/auth";
 export const AppRoutes = () => {
   const user = useUser();
 
-  const intialRoute = {
-    path: "/",
-    element: <Navigate to={user.data ? "/admin" : "/auth/login"} />,
-  };
   const routes = user.data ? protectedRoutes : publicRoutes;
 
-  const element = useRoutes([intialRoute, ...routes, ...commonRoutes, ...protectedRoutes]);
+  const element = useRoutes([...routes, ...commonRoutes, ...protectedRoutes]);
 
   return <>{element}</>;
 };
