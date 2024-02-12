@@ -1,6 +1,6 @@
 // LandingPage.js
 import React from 'react';
-import { Menu, MenuButton, MenuItem, MenuTitle } from '@/vibe/components';
+import { Button, Menu, MenuButton, MenuItem, MenuTitle } from '@/vibe/components';
 import { Person } from '@/vibe/components/Icon/Icons';
 import { useNavigate } from 'react-router-dom';
 import "./landing.css";
@@ -34,7 +34,7 @@ function HeroSection({ backgroundImage }: { backgroundImage: string }) {
       <div className="hero-content">
         <h1 className="hero-title">Welcome to Our Website!</h1>
         <p className="hero-subtitle">Discover our services and offerings.</p>
-        <button className="hero-button">Learn More</button>
+        <Button className="hero-button">Learn More</Button>
       </div>
     </div>
   );
