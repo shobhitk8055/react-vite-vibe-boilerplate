@@ -10,6 +10,7 @@ import { Button } from "@/vibe/components";
 import { useHookForm } from "@/hooks/useHookForm";
 import { TextFieldTextType } from "@/vibe/components/TextField/TextFieldConstants";
 import { useNotificationStore } from "@/stores/notifications";
+import { Locked } from "@/vibe/components/Icon/Icons";
 
 const schema = z.object({
   email: ((msg: string) => z.string({ required_error: msg }).min(1, msg))(
@@ -36,7 +37,6 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const login = useLogin();
   const navigate = useNavigate();
   const { animate, callAfterAnimateFn } = useAnimateFn();
-  const { addNotification } = useNotificationStore();
 
   return (
     <AnimatePresence>
@@ -69,10 +69,10 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               />
               <div className="d-flex justify-content-center">
                 <Button
-                  startIcon={<i className="fa-solid fa-lock" />}
+                  leftIcon={Locked}
                   isLoading={login.isLoading}
                   type="submit"
-                  className="w-100 mt-3 "
+                  className="w-100 mt-3"
                 >
                   Log In
                 </Button>

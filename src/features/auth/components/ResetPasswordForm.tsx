@@ -1,17 +1,31 @@
 import { Link, useNavigate } from "react-router-dom";
 import * as z from "zod";
-import { Button } from "@/components/Elements";
-import { Form, InputField } from "@/components/Form";
+import { Button } from "@/vibe/components";
+import { Form, InputField } from "@/vibe/components";
 import "../routes/auth.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { animations } from "./Layout";
 import useAnimateFn from "@/hooks/animate";
 import { useState } from "react";
 import { useNotificationStore } from "@/stores/notifications";
+import { useHookForm } from "@/hooks/useHookForm";
+import { TextFieldTextType } from "@/vibe/components/TextField/TextFieldConstants";
 
 const schema = z.object({
-  new_password: z.string().min(1, "Please enter new password"),
-  confirm_password: z.string().min(1, "Please enter confirm password"),
+  new_password: ((msg: string) => z.string({ required_error: msg }).min(1, msg))(
+    "Please enter new password"
+  ),
+  confirm_password: ((msg: string) => z.string({ required_error: msg }).min(1, msg))(
+    "Please enter confirm password"
+  ),
+}).superRefine(({ confirm_password, new_password }, ctx) => {
+  if (confirm_password !== new_password) {
+    ctx.addIssue({
+      path: ['confirm_password'],
+      code: 'custom',
+      message: 'The passwords did not match',
+    });
+  }
 });
 
 type ForgetValues = {
@@ -25,10 +39,13 @@ export const ResetPasswordForm = () => {
   const { animate, callAfterAnimateFn } = useAnimateFn();
   const [loading, setLoading] = useState(false);
 
+  const { methods } = useHookForm<ForgetValues, typeof schema>(schema);
+  const { formState, control } = methods;
+
   const handleSubmit = async (values: ForgetValues) => {
     try {
       setLoading(true);
-      values;
+      console.log(values);
       // await forgetPassword(values);
       addNotification({
         type: "success",
@@ -48,36 +65,37 @@ export const ResetPasswordForm = () => {
           <div className="card p-4 mt-4 mx-4">
             <h5>Reset Password</h5>
             <h6 className="mb-4 font-light">Please enter your new password</h6>
-            <Form<ForgetValues, typeof schema>
+            <Form<ForgetValues>
               onSubmit={handleSubmit}
-              schema={schema}
+              methods={methods}
             >
-              {({ register, formState }) => (
-                <>
-                  <InputField
-                    type="password"
-                    label="New Password"
-                    error={formState.errors["new_password"]}
-                    registration={register("new_password")}
-                  />
-                  <InputField
-                    type="password"
-                    label="Confirm Password"
-                    error={formState.errors["confirm_password"]}
-                    registration={register("confirm_password")}
-                  />
-                  <div className="d-flex justify-content-center">
-                    <Button
-                      startIcon={<i className="fa-solid fa-lock" />}
-                      isLoading={loading}
-                      type="submit"
-                      className="w-100 mt-2"
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </>
-              )}
+              <InputField
+                control={control}
+                type={TextFieldTextType.PASSWORD}
+                title="New Password"
+                error={formState.errors["new_password"]}
+                name="new_password"
+                wrapperClassName="mt-3"
+              />
+              <InputField
+                control={control}
+                type={TextFieldTextType.PASSWORD}
+                title="Confirm Password"
+                error={formState.errors["confirm_password"]}
+                name="confirm_password"
+                wrapperClassName="mt-3"
+              />
+              <div className="d-flex justify-content-center">
+                <Button
+                  startIcon={<i className="fa-solid fa-lock" />}
+                  isLoading={loading}
+                  type="submit"
+                  className="w-100 mt-3"
+                >
+                  Submit
+                </Button>
+              </div>
+
             </Form>
           </div>
           <p className="text-center mt-2">
