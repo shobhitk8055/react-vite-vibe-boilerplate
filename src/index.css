@@ -1,0 +1,7 @@
+:root {
+    --primary-color: #d8c054;
+    --primary-hover-color: #f5d751;
+    --primary-selected-color: #d3c68e;
+    --primary-selected-hover-color: #e9d370;
+    --text-color-on-primary: rgb(59, 59, 59);
+}
